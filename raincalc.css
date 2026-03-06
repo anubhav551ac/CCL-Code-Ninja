@@ -1,0 +1,8 @@
+@font-face {
+  font-family: Greenth;
+  src: url(fonts/Greenth_Personal_Use.otf);
+}
+
+.logo-text {
+    font-family: Greenth, sans-serif;
+}

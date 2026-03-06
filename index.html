@@ -9,7 +9,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300;400;600;700;800&family=Barlow:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300;400;600;700;800&family=Barlow:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="global.css" />
@@ -19,6 +27,10 @@
         height: 120px;
         display: flex;
         align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 200;
+        box-shadow: 0 2px 16px rgba(20, 60, 35, 0.15);
       }
 
       .header-container {
@@ -31,10 +43,10 @@
       }
 
       .logo-text {
-        font-family: Greenth;
         font-weight: 700;
         font-size: 32px;
         color: #000000;
+        font-family: "Barlow", sans-serif;
       }
 
       .navigation {
@@ -43,7 +55,7 @@
         gap: 48px;
       }
 
-      .nav-links {
+      nav .nav-links {
         display: flex;
         gap: 48px;
       }
@@ -55,6 +67,7 @@
         font-size: 18px;
         font-weight: 500;
         cursor: pointer;
+        font-family: "Barlow", sans-serif;
       }
 
       .nav-item:hover,
@@ -70,6 +83,20 @@
       .dropdown {
         position: relative;
         display: inline-block;
+      }
+
+      .dropdown-label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .chevron {
+        transition: transform 0.2s;
+        flex-shrink: 0;
+      }
+      .dropdown:hover .chevron {
+        transform: rotate(180deg);
       }
 
       .dropdown-menu {
@@ -89,6 +116,7 @@
           transform 180ms ease,
           visibility 180ms;
         z-index: 20;
+        list-style: none;
       }
 
       .dropdown:hover .dropdown-menu,
@@ -108,6 +136,8 @@
         color: #0e2d1c;
         text-decoration: none;
         font-weight: 600;
+        font-family: "Barlow", sans-serif;
+        font-size: 15px;
       }
 
       .dropdown-menu a:hover {
@@ -121,6 +151,17 @@
         border-radius: 8px;
         font-weight: 600;
         font-size: 16px;
+        font-family: "Barlow", sans-serif;
+        border: none;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+      }
+
+      .contact-btn:hover {
+        background: #1a1a1a;
+        transform: translateY(-1px);
       }
 
       @media (max-width: 768px) {
@@ -176,10 +217,13 @@
       }
 
       .hero-title {
-        font-size: 64px;
-        font-weight: 700;
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 800;
+        font-size: clamp(3rem, 7.5vw, 6.5rem);
+        line-height: 0.92;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
         color: #ffffff;
-        line-height: 1.1;
       }
 
       .hero-subtitle {
@@ -376,22 +420,6 @@
           width: 100%;
           max-width: 400px;
         }
-      }
-
-      /* CSS for section section:Parallax */
-      #parallax-section {
-        background-color: #d9d9d9;
-        height: 628px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .parallax-text {
-        font-size: 96px;
-        font-weight: 700;
-        color: #000000;
-        opacity: 0.2; /* Visual estimation */
       }
 
       /* CSS for section section:HowItWorks */
@@ -704,16 +732,31 @@
         <nav class="navigation">
           <div class="nav-links">
             <a href="index.html" class="nav-item">Home</a>
-
             <div class="nav-item dropdown">
-              <span class="dropdown-label">Features</span>
+              <span class="dropdown-label"
+                >Features
+                <svg
+                  class="chevron"
+                  viewBox="0 0 12 8"
+                  fill="none"
+                  width="11"
+                  height="11"
+                >
+                  <path
+                    d="M1 1l5 5 5-5"
+                    stroke="#000000"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
               <ul class="dropdown-menu">
                 <li><a href="plants.html">Native Plant Nursery</a></li>
                 <li><a href="rain.html">Gardening Consultation</a></li>
                 <li><a href="waste.html">Eco-Friendly Landscaping</a></li>
               </ul>
             </div>
-
             <a href="#gallery-cta" class="nav-item">Content</a>
           </div>
           <div class="nav-button-wrapper">
@@ -769,7 +812,8 @@
             <div class="card-content">
               <h3 class="card-title">Waste Management</h3>
               <p class="card-desc">
-                Check if your waste is compostable, recyclable, or landfill waste and learn the best way to dispose of it.
+                Check if your waste is compostable, recyclable, or landfill
+                waste and learn the best way to dispose of it.
               </p>
             </div>
           </div>
@@ -792,7 +836,8 @@
             <div class="card-content">
               <h3 class="card-title">Rain Harvest Calculator</h3>
               <p class="card-desc">
-                Estimate how much rainwater you can collect from your roof and learn how to store it for sustainable use.
+                Estimate how much rainwater you can collect from your roof and
+                learn how to store it for sustainable use.
               </p>
             </div>
           </div>
@@ -815,19 +860,13 @@
             <div class="card-content">
               <h3 class="card-title">Plant Cultivation Guide</h3>
               <p class="card-desc">
-               Browse a curated selection of region-friendly plants and learn
+                Browse a curated selection of region-friendly plants and learn
                 how to grow them with minimal watering and maintenance.
               </p>
             </div>
           </div>
         </a>
       </div>
-    </section>
-    <section id="parallax-section">
-      <div class="container parallax-container">
-        <h2 class="parallax-text">Parallax image</h2>
-      </div>
-    </section>
     <section id="how-it-works">
       <div class="container how-container">
         <!-- Top Content -->
@@ -886,53 +925,7 @@
         </div>
       </div>
     </section>
-    <section id="gallery-cta">
-      <div class="container gallery-container">
-        <!-- Scattered Images (Absolute Positioning) -->
-        <img
-          src="images/52c2a754fec4ea7b18623afc643e1a086187fe3e.png"
-          class="gallery-img img-1"
-          alt="Nature 1"
-        />
-        <img
-          src="images/19e9c366349d5c759b2a57717c1e988c55d4d4cd.png"
-          class="gallery-img img-2"
-          alt="Nature 2"
-        />
-        <img
-          src="images/09268784aaa11062685eba05596ba11758829d96.png"
-          class="gallery-img img-3"
-          alt="Nature 3"
-        />
-        <img
-          src="images/pexels-karola-g-4207906.jpg"
-          class="gallery-img img-4"
-          alt="Nature 4"
-        />
-        <img
-          src="images/f4576c9d0df08503615ce17c893f5167b30a3b30.png"
-          class="gallery-img img-5"
-          alt="Nature 5"
-        />
-        <img
-          src="images/1908d0b1db08dd7de46e7749a16a05f95dc505f2.png"
-          class="gallery-img img-6"
-          alt="Nature 6"
-        />
 
-        <!-- Central Content -->
-        <div class="cta-content">
-          <h2 class="cta-title">Start Building a Greener Future</h2>
-          <div class="cta-icon">
-            <img
-              src="images/2963050f4e024c26a0d5b8e06e43e9a434298fe2.png"
-              alt="Recycle Icon"
-            />
-          </div>
-          <button class="dashboard-btn">Open Dashboard</button>
-        </div>
-      </div>
-    </section>
     <footer id="footer-section">
       <!-- Top Footer -->
       <div class="footer-top">
