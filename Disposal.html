@@ -1,0 +1,1432 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GreeNinja — Disposal</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300;400;600;700;800&family=Barlow:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #f4f1e8;
+        --bg2: #edeade;
+        --panel: #e6e2d4;
+        --border: #ccc8b8;
+        --border2: #b8b4a4;
+        --dim: #8a8878;
+        --muted: #5a6050;
+        --text: #1a2014;
+        --green: #3d7a5a;
+        --dispose: #b86a10;
+        --dispose2: #8f4e0a;
+        --degrade: #2a7a5a;
+        --nondegrade: #c02020;
+      }
+
+      html,
+      body {
+        font-family: "Barlow", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* ── NAV ── */
+      #header-section {
+        background-color: #3d7a5a;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 200;
+        box-shadow: 0 2px 16px rgba(20, 60, 35, 0.15);
+      }
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 80px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .logo-text {
+        font-weight: 700;
+        font-size: 32px;
+        color: #000000;
+      }
+      .navigation {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 48px;
+      }
+      .nav-item,
+      .dropdown-label {
+        text-decoration: none;
+        color: #000000;
+        font-size: 18px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: "Barlow", sans-serif;
+      }
+      .nav-item:hover,
+      .dropdown-label:hover {
+        color: #1f4d2a;
+      }
+      .nav-button-wrapper {
+        display: flex;
+        align-items: center;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .chevron {
+        transition: transform 0.2s;
+        flex-shrink: 0;
+      }
+      .dropdown:hover .chevron {
+        transform: rotate(180deg);
+      }
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 12px;
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+        padding: 12px 0;
+        min-width: 220px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition:
+          opacity 180ms ease,
+          transform 180ms ease,
+          visibility 180ms;
+        z-index: 20;
+        list-style: none;
+      }
+      .dropdown:hover .dropdown-menu,
+      .dropdown:focus-within .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .dropdown-menu li {
+        list-style: none;
+      }
+      .dropdown-menu a {
+        display: block;
+        padding: 10px 18px;
+        color: #0e2d1c;
+        text-decoration: none;
+        font-weight: 600;
+        font-family: "Barlow", sans-serif;
+        font-size: 15px;
+      }
+      .dropdown-menu a:hover {
+        background: rgba(29, 98, 60, 0.08);
+      }
+      .contact-btn {
+        background-color: #000000;
+        color: #3d7a5a;
+        padding: 14px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 16px;
+        font-family: "Barlow", sans-serif;
+        border: none;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+      }
+      .contact-btn:hover {
+        background: #1a1a1a;
+        transform: translateY(-1px);
+      }
+
+      /* ── SUBBAR ── */
+      .subbar {
+        background: var(--bg2);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 80px;
+        height: 38px;
+      }
+      .subbar span {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 400;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+      .subbar a {
+        color: var(--muted);
+        text-decoration: none;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .subbar a:hover {
+        color: var(--text);
+      }
+
+      /* ── HERO ── */
+      .hero {
+        padding: 64px 80px 56px;
+        border-bottom: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: end;
+        gap: 40px;
+        animation: fadeUp 0.55s ease both;
+      }
+      .hero-eyebrow {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 400;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .hero-eyebrow::before {
+        content: "";
+        width: 20px;
+        height: 1px;
+        background: var(--dispose);
+      }
+      .hero h1 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 800;
+        font-size: clamp(3rem, 7vw, 6rem);
+        line-height: 0.92;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        color: var(--text);
+      }
+      .hero h1 .thin {
+        font-weight: 200;
+        color: var(--dim);
+      }
+      .hero h1 .accent {
+        color: var(--dispose);
+      }
+      .hero-sub {
+        margin-top: 18px;
+        font-size: 0.9rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.75;
+        max-width: 440px;
+      }
+      .hero-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+      }
+      .hero-badge .badge-label {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.58rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+      .hero-badge .badge-tag {
+        padding: 8px 18px;
+        background: rgba(184, 106, 16, 0.08);
+        border: 1px solid rgba(184, 106, 16, 0.25);
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--dispose);
+      }
+
+      /* ── SEARCH ── */
+      .search-section {
+        padding: 40px 80px;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg2);
+        animation: fadeUp 0.6s 0.08s ease both;
+      }
+      .search-label {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 400;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .search-label::before {
+        content: "";
+        width: 14px;
+        height: 1px;
+        background: var(--border2);
+      }
+      .search-row {
+        display: flex;
+        gap: 0;
+        max-width: 640px;
+      }
+      .search-input {
+        flex: 1;
+        padding: 14px 20px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-right: none;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 1rem;
+        color: var(--text);
+        outline: none;
+        letter-spacing: 0.04em;
+        transition: border-color 0.2s;
+      }
+      .search-input:focus {
+        border-color: var(--dispose);
+      }
+      .search-input::placeholder {
+        color: var(--border2);
+      }
+      .search-btn {
+        padding: 14px 24px;
+        background: var(--dispose);
+        color: #fff;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.2s;
+      }
+      .search-btn:hover {
+        background: var(--dispose2);
+      }
+      .search-btn svg {
+        width: 14px;
+        height: 14px;
+      }
+      .search-hint {
+        margin-top: 12px;
+        font-size: 0.76rem;
+        font-weight: 300;
+        color: var(--dim);
+        font-style: italic;
+      }
+
+      /* ── MAIN BODY GRID ── */
+      .body-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-bottom: 1px solid var(--border);
+        animation: fadeUp 0.65s 0.15s ease both;
+      }
+
+      /* ── DEGRADABLE SPLIT PANEL ── */
+      .split-panel {
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+      }
+      .split-head {
+        padding: 28px 40px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .split-head h3 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text);
+      }
+      .split-num {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.6rem;
+        color: var(--border2);
+        letter-spacing: 0.1em;
+      }
+
+      .split-cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        flex: 1;
+      }
+
+      .deg-col {
+        padding: 36px 28px;
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .deg-col:last-child {
+        border-right: none;
+      }
+
+      .deg-col-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 22px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .deg-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .deg-dot.green {
+        background: var(--degrade);
+      }
+      .deg-dot.red {
+        background: var(--nondegrade);
+      }
+
+      .deg-col-title {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .col-degrade .deg-col-title {
+        color: var(--degrade);
+      }
+      .col-nondegrade .deg-col-title {
+        color: var(--nondegrade);
+      }
+
+      .deg-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .deg-list li {
+        font-size: 0.78rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.5;
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .deg-list li::before {
+        content: "—";
+        font-size: 0.7rem;
+        flex-shrink: 0;
+      }
+      .col-degrade .deg-list li::before {
+        color: var(--degrade);
+        opacity: 0.5;
+      }
+      .col-nondegrade .deg-list li::before {
+        color: var(--nondegrade);
+        opacity: 0.5;
+      }
+
+      .deg-footer {
+        margin-top: auto;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: gap 0.2s;
+      }
+      .col-degrade .deg-footer {
+        color: var(--degrade);
+      }
+      .col-nondegrade .deg-footer {
+        color: var(--nondegrade);
+      }
+      .deg-col:hover .deg-footer {
+        gap: 10px;
+      }
+
+      .li-note {
+        font-size: 0.72rem;
+        color: var(--dim);
+        font-style: italic;
+      }
+
+      /* ── MAP PANEL ── */
+      .map-panel {
+        display: flex;
+        flex-direction: column;
+      }
+      .map-head {
+        padding: 28px 40px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .map-head h3 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text);
+      }
+      .map-body {
+        flex: 1;
+        padding: 36px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .map-sub {
+        font-size: 0.83rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      /* SVG map placeholder */
+      .map-svg-wrap {
+        flex: 1;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 260px;
+        position: relative;
+        overflow: hidden;
+      }
+      /* city map SVG drawn in CSS */
+      .map-svg-wrap svg {
+        width: 100%;
+        height: 100%;
+        max-width: 340px;
+        max-height: 280px;
+      }
+
+      /* pin legend */
+      .pin-legend {
+        display: flex;
+        gap: 24px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+      .pin-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .pin-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .pin-dot.recycling {
+        background: var(--nondegrade);
+      }
+      .pin-dot.compost {
+        background: #1a78c0;
+      }
+      .pin-label {
+        color: var(--muted);
+      }
+
+      /* ── DISPOSAL METHODS ── */
+      .methods-section {
+        border-bottom: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        animation: fadeUp 0.65s 0.2s ease both;
+      }
+      .method-col {
+        padding: 36px 28px;
+        border-right: 1px solid var(--border);
+        transition: background 0.2s;
+      }
+      .method-col:last-child {
+        border-right: none;
+      }
+      .method-col:hover {
+        background: var(--bg2);
+      }
+      .method-n {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        color: var(--dispose);
+        font-weight: 700;
+        margin-bottom: 14px;
+      }
+      .method-icon {
+        width: 38px;
+        height: 38px;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        transition: border-color 0.2s;
+      }
+      .method-col:hover .method-icon {
+        border-color: rgba(184, 106, 16, 0.4);
+      }
+      .method-icon svg {
+        width: 17px;
+        height: 17px;
+      }
+      .method-col h4 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text);
+        margin-bottom: 8px;
+      }
+      .method-col p {
+        font-size: 0.77rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      /* ── FOOTER ── */
+      .footer-top {
+        background-color: #f7f7f7;
+        height: 236px;
+        display: flex;
+        align-items: center;
+      }
+
+      .footer-top-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 194px;
+        width: 100%;
+      }
+
+      .footer-brand {
+        font-size: 48px;
+        font-weight: 700;
+        color: #000000;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 48px;
+      }
+
+      .footer-links a {
+        text-decoration: none;
+        color: #000000;
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .footer-bottom {
+        background-color: #ffffff;
+        height: 264px;
+        border-top: 1px solid #e6e6e6;
+        display: flex;
+        align-items: flex-start;
+        padding-top: 96px;
+        box-sizing: border-box;
+      }
+
+      .footer-bottom-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 653px 0 653px;
+        width: 100%;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .footer-logo-small {
+        font-weight: 700;
+        font-size: 24px;
+        letter-spacing: 0.05em;
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .icon-box {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .icon-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+
+      @media (max-width: 768px) {
+        .footer-top-container {
+          flex-direction: column;
+          gap: 30px;
+          padding: 0 20px;
+        }
+        .footer-bottom-container {
+          padding: 0 20px;
+        }
+      }
+
+      /* ── ANIMATION ── */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 1024px) {
+        .header-container,
+        .subbar,
+        .hero,
+        .search-section,
+        footer {
+          padding-left: 32px;
+          padding-right: 32px;
+        }
+        .body-grid {
+          grid-template-columns: 1fr;
+        }
+        .split-panel {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .methods-section {
+          grid-template-columns: 1fr 1fr;
+        }
+        .method-col:nth-child(even) {
+          border-right: none;
+        }
+      }
+      @media (max-width: 640px) {
+        .navigation {
+          display: none;
+        }
+        .hero {
+          grid-template-columns: 1fr;
+        }
+        .hero-badge {
+          display: none;
+        }
+        .split-cols {
+          grid-template-columns: 1fr;
+        }
+        .deg-col {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .methods-section {
+          grid-template-columns: 1fr;
+        }
+        .method-col {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── NAV ── -->
+    <section id="header-section">
+      <div class="container header-container">
+        <div class="logo">
+          <div class="logo-text">GREENINJA</div>
+        </div>
+        <nav class="navigation">
+          <div class="nav-links">
+            <a href="index.html" class="nav-item">Home</a>
+            <div class="nav-item dropdown">
+              <span class="dropdown-label"
+                >Features
+                <svg
+                  class="chevron"
+                  viewBox="0 0 12 8"
+                  fill="none"
+                  width="11"
+                  height="11"
+                >
+                  <path
+                    d="M1 1l5 5 5-5"
+                    stroke="#000000"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <ul class="dropdown-menu">
+                <li><a href="plants.html">Plant Cultivation</a></li>
+                <li><a href="rain.html">Rain Harvest Calculator</a></li>
+                <li><a href="waste.html">Waste Management</a></li>
+              </ul>
+            </div>
+            <a href="about.html" class="nav-item">About</a>
+          </div>
+          <div class="nav-button-wrapper">
+            <button class="contact-btn">Contact Us</button>
+          </div>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ── SUBBAR ── -->
+    <div class="subbar">
+      <span>Code Ninja</span>
+      <a href="waste.html">← Back</a>
+    </div>
+
+    <!-- ── HERO ── -->
+    <div class="hero">
+      <div>
+        <div class="hero-eyebrow">
+          Path B — Disposal — Proper Waste Disposal
+        </div>
+        <h1><span class="thin">Dis</span><span class="accent">posal.</span></h1>
+        <p class="hero-sub">
+          Enter your waste items to find out whether they are degradable or
+          non-degradable, and locate your nearest recycling and disposal
+          facility.
+        </p>
+      </div>
+      <div class="hero-badge">
+        <span class="badge-label">Current Path</span>
+        <span class="badge-tag">Disposal Guide</span>
+      </div>
+    </div>
+
+    <!-- ── SEARCH ── -->
+    <div class="search-section">
+      <div class="search-label">Enter Your Waste</div>
+      <div class="search-row">
+        <input
+          class="search-input"
+          type="text"
+          placeholder="e.g. Banana peel, Plastic, Glass bottle…"
+        />
+        <button class="search-btn">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          Search
+        </button>
+      </div>
+      <p class="search-hint">
+        Try: plastic bottle, glass jar, battery, cardboard, aluminium can…
+      </p>
+    </div>
+
+    <!-- ── BODY GRID ── -->
+    <div class="body-grid">
+      <!-- LEFT: DEGRADABLE SPLIT -->
+      <div class="split-panel">
+        <div class="split-head">
+          <h3>Degradable vs Non-Degradable</h3>
+          <span class="split-num">.01</span>
+        </div>
+        <div class="split-cols">
+          <!-- DEGRADABLE -->
+          <div class="deg-col col-degrade">
+            <div class="deg-col-head">
+              <div class="deg-dot green"></div>
+              <div class="deg-col-title">Degradable Sites</div>
+            </div>
+            <ul class="deg-list">
+              <li>
+                <strong>Sisdol Landfill Site</strong> — Okharpauwa, Nuwakot
+                <span class="li-note">(serves Kathmandu Valley)</span>
+              </li>
+              <li>
+                <strong>Bancharedada Landfill Site</strong> — Nuwakot–Dhading
+                Border
+              </li>
+              <li>
+                <strong>Teku Waste Transfer Station</strong> — Teku, Kathmandu
+              </li>
+              <li>
+                <strong>Kathmandu Metropolitan Compost Facility</strong> — Teku,
+                Kathmandu
+              </li>
+              <li>
+                <strong>Bhaktapur Organic Waste Processing Center</strong> —
+                Sallaghari, Bhaktapur
+              </li>
+              <li>
+                <strong>Lalitpur Organic Compost Facility</strong> — Nakhu,
+                Lalitpur
+              </li>
+            </ul>
+            <div class="deg-footer">Go to compost guide →</div>
+          </div>
+
+          <!-- NON DEGRADABLE -->
+          <div class="deg-col col-nondegrade">
+            <div class="deg-col-head">
+              <div class="deg-dot red"></div>
+              <div class="deg-col-title">Recycling Centres</div>
+            </div>
+            <ul class="deg-list">
+              <li><strong>Doko Recyclers</strong> — Sanothimi, Bhaktapur</li>
+              <li>
+                <strong>Khaalisisi</strong> — Bansidhar Marga, Bishalnagar,
+                Kathmandu
+              </li>
+              <li><strong>Upcycle Nepal</strong> — Balkumari, Lalitpur</li>
+              <li>
+                <strong>Plast Nepal Foundation</strong> — Balaju Industrial
+                Area, Kathmandu
+              </li>
+              <li><strong>Nepwaste</strong> — Sanepa, Lalitpur</li>
+              <li><strong>Blue Waste to Value Pvt. Ltd.</strong> — Lalitpur</li>
+              <li>
+                <strong>Green Road Waste Management Pvt. Ltd.</strong> —
+                Kalanki, Kathmandu
+              </li>
+            </ul>
+            <div class="deg-footer">Find disposal facility →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: MAP -->
+      <div class="map-panel">
+        <div class="map-head">
+          <h3>Kathmandu Valley Facilities</h3>
+          <span class="split-num">.02</span>
+        </div>
+        <div class="map-body">
+          <p class="map-sub">
+            Active disposal and recycling facilities across the Kathmandu Valley
+            — Kathmandu, Bhaktapur, and Lalitpur districts.
+          </p>
+
+          <!-- Kathmandu Valley schematic map -->
+          <div class="map-svg-wrap">
+            <svg
+              viewBox="0 0 340 300"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <!-- Valley rim / hills outline -->
+              <ellipse
+                cx="170"
+                cy="150"
+                rx="155"
+                ry="130"
+                fill="#e8e4d6"
+                stroke="#b8b4a4"
+                stroke-width="1"
+              />
+
+              <!-- Kathmandu district (centre-left) -->
+              <polygon
+                points="90,90 175,75 195,130 165,175 85,165 70,125"
+                fill="#dedad0"
+                stroke="#b8b4a4"
+                stroke-width="1"
+              />
+              <!-- Bhaktapur district (right) -->
+              <polygon
+                points="195,80 265,85 280,145 240,175 195,165 195,130"
+                fill="#e4e0d2"
+                stroke="#b8b4a4"
+                stroke-width="1"
+              />
+              <!-- Lalitpur district (bottom) -->
+              <polygon
+                points="85,165 165,175 185,230 145,255 95,240 70,200"
+                fill="#e0dccf"
+                stroke="#b8b4a4"
+                stroke-width="1"
+              />
+
+              <!-- Bagmati River -->
+              <path
+                d="M80,100 Q110,120 130,155 Q150,185 160,220 Q168,245 175,265"
+                stroke="#a8d4e8"
+                stroke-width="6"
+                fill="none"
+                stroke-linecap="round"
+                opacity="0.65"
+              />
+              <!-- Bishnumati River -->
+              <path
+                d="M110,75 Q115,110 112,145 Q110,175 120,205"
+                stroke="#a8d4e8"
+                stroke-width="4"
+                fill="none"
+                stroke-linecap="round"
+                opacity="0.45"
+              />
+
+              <!-- Ring road (dashed circle) -->
+              <ellipse
+                cx="150"
+                cy="140"
+                rx="72"
+                ry="62"
+                stroke="#ccc8b8"
+                stroke-width="1.5"
+                stroke-dasharray="5 4"
+                fill="none"
+              />
+
+              <!-- District labels -->
+              <text
+                x="118"
+                y="128"
+                font-family="sans-serif"
+                font-size="7"
+                fill="#8a8878"
+                font-weight="600"
+                letter-spacing="0.5"
+              >
+                KATHMANDU
+              </text>
+              <text
+                x="215"
+                y="128"
+                font-family="sans-serif"
+                font-size="6.5"
+                fill="#8a8878"
+                font-weight="600"
+                letter-spacing="0.5"
+              >
+                BHAKTAPUR
+              </text>
+              <text
+                x="110"
+                y="215"
+                font-family="sans-serif"
+                font-size="6.5"
+                fill="#8a8878"
+                font-weight="600"
+                letter-spacing="0.5"
+              >
+                LALITPUR
+              </text>
+
+              <!-- ── RED PINS: Degradable / Landfill sites ── -->
+              <!-- Sisdol Landfill, Nuwakot (NW, outside valley) -->
+              <g transform="translate(62,52)">
+                <circle cx="0" cy="0" r="8" fill="#c02020" />
+                <circle cx="0" cy="0" r="3" fill="white" />
+                <line
+                  x1="0"
+                  y1="8"
+                  x2="0"
+                  y2="16"
+                  stroke="#c02020"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <text
+                  x="10"
+                  y="4"
+                  font-family="sans-serif"
+                  font-size="5.5"
+                  fill="#5a6050"
+                >
+                  Sisdol
+                </text>
+              </g>
+              <!-- Teku Transfer Station, Kathmandu -->
+              <g transform="translate(118,145)">
+                <circle cx="0" cy="0" r="8" fill="#c02020" />
+                <circle cx="0" cy="0" r="3" fill="white" />
+                <line
+                  x1="0"
+                  y1="8"
+                  x2="0"
+                  y2="16"
+                  stroke="#c02020"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <text
+                  x="10"
+                  y="4"
+                  font-family="sans-serif"
+                  font-size="5.5"
+                  fill="#5a6050"
+                >
+                  Teku
+                </text>
+              </g>
+              <!-- Bhaktapur Organic Processing, Sallaghari -->
+              <g transform="translate(238,128)">
+                <circle cx="0" cy="0" r="8" fill="#c02020" />
+                <circle cx="0" cy="0" r="3" fill="white" />
+                <line
+                  x1="0"
+                  y1="8"
+                  x2="0"
+                  y2="16"
+                  stroke="#c02020"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <text
+                  x="10"
+                  y="4"
+                  font-family="sans-serif"
+                  font-size="5.5"
+                  fill="#5a6050"
+                >
+                  Sallaghari
+                </text>
+              </g>
+              <!-- Lalitpur Compost, Nakhu -->
+              <g transform="translate(138,220)">
+                <circle cx="0" cy="0" r="8" fill="#c02020" />
+                <circle cx="0" cy="0" r="3" fill="white" />
+                <line
+                  x1="0"
+                  y1="8"
+                  x2="0"
+                  y2="16"
+                  stroke="#c02020"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <text
+                  x="10"
+                  y="4"
+                  font-family="sans-serif"
+                  font-size="5.5"
+                  fill="#5a6050"
+                >
+                  Nakhu
+                </text>
+              </g>
+
+              <!-- ── BLUE PINS: Non-Degradable / Recycling centres ── -->
+              <!-- Doko Recyclers, Sanothimi Bhaktapur -->
+              <g transform="translate(256,108)">
+                <circle cx="0" cy="0" r="8" fill="#1a78c0" />
+                <circle cx="0" cy="0" r="3" fill="white" />
+                <line
+                  x1="0"
+                  y1="8"
+                  x2="0"
+                  y2="16"
+                  stroke="#1a78c0"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <text
+                  x="10"
+                  y="4"
+                  font-family="sans-serif"
+                  font-size="5.5"
+                  fill="#5a6050"
+                >
+                  Doko
+                </text>
+              </g>
+              <!-- Khaalisisi, Bishalnagar Kathmandu -->
+              <g transform="translate(162,100)">
+                <circle cx="0" cy="0" r="8" fill="#1a78c0" />
+                <circle cx="0" cy="0" r="3" fill="white" />
+                <line
+                  x1="0"
+                  y1="8"
+                  x2="0"
+                  y2="16"
+                  stroke="#1a78c0"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <text
+                  x="10"
+                  y="4"
+                  font-family="sans-serif"
+                  font-size="5.5"
+                  fill="#5a6050"
+                >
+                  Khaalisisi
+                </text>
+              </g>
+              <!-- Nepwaste / Upcycle Nepal, Sanepa / Balkumari Lalitpur -->
+              <g transform="translate(152,192)">
+                <circle cx="0" cy="0" r="8" fill="#1a78c0" />
+                <circle cx="0" cy="0" r="3" fill="white" />
+                <line
+                  x1="0"
+                  y1="8"
+                  x2="0"
+                  y2="16"
+                  stroke="#1a78c0"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <text
+                  x="10"
+                  y="4"
+                  font-family="sans-serif"
+                  font-size="5.5"
+                  fill="#5a6050"
+                >
+                  Sanepa
+                </text>
+              </g>
+              <!-- Plast Nepal / Green Road, Balaju / Kalanki -->
+              <g transform="translate(98,118)">
+                <circle cx="0" cy="0" r="8" fill="#1a78c0" />
+                <circle cx="0" cy="0" r="3" fill="white" />
+                <line
+                  x1="0"
+                  y1="8"
+                  x2="0"
+                  y2="16"
+                  stroke="#1a78c0"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <text
+                  x="10"
+                  y="4"
+                  font-family="sans-serif"
+                  font-size="5.5"
+                  fill="#5a6050"
+                >
+                  Kalanki
+                </text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="pin-legend">
+            <div class="pin-item">
+              <div class="pin-dot recycling"></div>
+              <span class="pin-label">Degradable / Landfill Sites</span>
+            </div>
+            <div class="pin-item">
+              <div class="pin-dot compost"></div>
+              <span class="pin-label">Non-Degradable / Recycling Centres</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DISPOSAL METHODS ── -->
+    <div class="methods-section">
+      <div class="method-col">
+        <div class="method-n">.01</div>
+        <div class="method-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#b86a10"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="1 4 1 10 7 10" />
+            <polyline points="23 20 23 14 17 14" />
+            <path
+              d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15"
+            />
+          </svg>
+        </div>
+        <h4>Kerbside Recycling</h4>
+        <p>
+          Rinse and sort plastics, glass, paper, and metals into your designated
+          recycling bin for weekly collection.
+        </p>
+      </div>
+      <div class="method-col">
+        <div class="method-n">.02</div>
+        <div class="method-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#b86a10"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+        </div>
+        <h4>Drop-Off Centre</h4>
+        <p>
+          Take bulky, hazardous, or e-waste items to your nearest community
+          recycling or council drop-off facility.
+        </p>
+      </div>
+      <div class="method-col">
+        <div class="method-n">.03</div>
+        <div class="method-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#b86a10"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="1" y="3" width="15" height="13" rx="1" />
+            <path d="M16 8h4l3 3v5h-7V8z" />
+            <circle cx="5.5" cy="18.5" r="2.5" />
+            <circle cx="18.5" cy="18.5" r="2.5" />
+          </svg>
+        </div>
+        <h4>Kerbside Collection</h4>
+        <p>
+          Large items and green waste can be booked for kerbside bulk collection
+          through your local council.
+        </p>
+      </div>
+      <div class="method-col">
+        <div class="method-n">.04</div>
+        <div class="method-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#b86a10"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"
+            />
+          </svg>
+        </div>
+        <h4>Donate or Reuse</h4>
+        <p>
+          Before disposing, consider donating to op-shops, repair cafes, or
+          community swap groups to extend product life.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <footer id="footer-section">
+      <!-- Top Footer -->
+      <div class="footer-top">
+        <div class="container footer-top-container">
+          <div class="footer-brand">GreeNinja</div>
+          <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Resources</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Footer -->
+      <div class="footer-bottom">
+        <div class="container footer-bottom-container">
+          <div class="footer-logo-small">GREENINJA</div>
+          <div class="social-icons">
+            <div class="icon-box">
+              <img src="images/icons8-facebook-90.png" alt="Facebook" />
+            </div>
+            <div class="icon-box">
+              <img src="images/icons8-linkedin-90.png" alt="LinkedIn" />
+            </div>
+            <div class="icon-box">
+              <img src="images/icons8-youtube-90.png" alt="YouTube" />
+            </div>
+            <div class="icon-box">
+              <img src="images/icons8-instagram-90.png" alt="Instagram" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

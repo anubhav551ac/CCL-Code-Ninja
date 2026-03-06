@@ -1,0 +1,43 @@
+@font-face {
+  font-family: Greenth;
+  src: url(fonts/Greenth_Personal_Use.otf);
+}
+@font-face {
+  font-family: Avegwet;
+  src: url(fonts/Avegwet.ttf);
+}
+
+body {
+  font-family: 'Barlow', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  position: relative;
+  width: 100%;
+}
+
+h1, h2, h3, h4, h5, p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+.section-padding {
+  padding: 60px 20px;
+}

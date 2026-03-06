@@ -1,0 +1,2008 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GreeNinja — Plant Cultivation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300;400;600;700;800&family=Barlow:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #f4f1e8;
+        --bg2: #edeade;
+        --panel: #e6e2d4;
+        --border: #ccc8b8;
+        --border2: #b8b4a4;
+        --dim: #8a8878;
+        --muted: #5a6050;
+        --text: #1a2014;
+        --green: #3d7a5a;
+        --plant: #2a7a3a;
+        --plant2: #1e5c2a;
+        --sun: #c8960a;
+        --water: #1a78c0;
+      }
+
+      html,
+      body {
+        font-family: "Barlow", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      /* ── NAV ── */
+      #header-section {
+        background-color: #3d7a5a;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 200;
+        box-shadow: 0 2px 16px rgba(20, 60, 35, 0.15);
+      }
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 80px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .logo-text {
+        font-weight: 700;
+        font-size: 32px;
+        color: #000000;
+      }
+      .navigation {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+      }
+      nav .nav-links {
+        display: flex;
+        gap: 48px;
+      }
+      .nav-item,
+      .dropdown-label {
+        text-decoration: none;
+        color: #000000;
+        font-size: 18px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: "Barlow", sans-serif;
+      }
+      .nav-item:hover,
+      .dropdown-label:hover {
+        color: #1f4d2a;
+      }
+      .nav-button-wrapper {
+        display: flex;
+        align-items: center;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .chevron {
+        transition: transform 0.2s;
+        flex-shrink: 0;
+      }
+      .dropdown:hover .chevron {
+        transform: rotate(180deg);
+      }
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 12px;
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+        padding: 12px 0;
+        min-width: 220px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition:
+          opacity 180ms ease,
+          transform 180ms ease,
+          visibility 180ms;
+        z-index: 20;
+        list-style: none;
+      }
+      .dropdown:hover .dropdown-menu,
+      .dropdown:focus-within .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .dropdown-menu li {
+        list-style: none;
+      }
+      .dropdown-menu a {
+        display: block;
+        padding: 10px 18px;
+        color: #0e2d1c;
+        text-decoration: none;
+        font-weight: 600;
+        font-family: "Barlow", sans-serif;
+        font-size: 15px;
+      }
+      .dropdown-menu a:hover {
+        background: rgba(29, 98, 60, 0.08);
+      }
+      .contact-btn {
+        background-color: #000000;
+        color: #3d7a5a;
+        padding: 14px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 16px;
+        font-family: "Barlow", sans-serif;
+        border: none;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+      }
+      .contact-btn:hover {
+        background: #1a1a1a;
+        transform: translateY(-1px);
+      }
+
+      /* ── ANCHOR NAV ── */
+      .anchor-nav {
+        background: var(--bg2);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 80px;
+        height: 42px;
+        position: sticky;
+        top: 120px;
+        z-index: 100;
+      }
+      .anchor-links {
+        display: flex;
+        gap: 0;
+      }
+      .anchor-link {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--dim);
+        text-decoration: none;
+        padding: 0 20px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        border-right: 1px solid var(--border);
+        transition:
+          color 0.2s,
+          background 0.2s;
+      }
+      .anchor-link:first-child {
+        border-left: 1px solid var(--border);
+      }
+      .anchor-link:hover {
+        color: var(--plant);
+        background: var(--bg);
+      }
+      .subbar-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .back-link {
+        color: var(--muted);
+        text-decoration: none;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .back-link:hover {
+        color: var(--text);
+      }
+
+      /* ── SHARED ── */
+      .section-head {
+        padding: 28px 80px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .section-head h2 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 700;
+        font-size: 1.15rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text);
+      }
+      .section-eyebrow {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--plant);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .section-eyebrow::before {
+        content: "";
+        width: 12px;
+        height: 1px;
+        background: var(--plant);
+        opacity: 0.5;
+      }
+      .sec-num {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        color: var(--border2);
+        letter-spacing: 0.1em;
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .reveal {
+        opacity: 0;
+        transform: translateY(16px);
+        transition:
+          opacity 0.6s ease,
+          transform 0.6s ease;
+      }
+      .reveal.vis {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal-d1 {
+        transition-delay: 0.1s;
+      }
+      .reveal-d2 {
+        transition-delay: 0.2s;
+      }
+
+      /* ── HERO ── */
+      .hero {
+        padding: 64px 80px 56px;
+        border-bottom: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+        animation: fadeUp 0.55s ease both;
+      }
+      .hero-left {
+      }
+      .hero-eyebrow {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 400;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .hero-eyebrow::before {
+        content: "";
+        width: 20px;
+        height: 1px;
+        background: var(--plant);
+      }
+      .hero h1 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 800;
+        font-size: clamp(3rem, 6vw, 5.5rem);
+        line-height: 0.92;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        color: var(--text);
+      }
+      .hero h1 .thin {
+        font-weight: 200;
+        color: var(--dim);
+      }
+      .hero h1 .accent {
+        color: var(--plant);
+      }
+      .hero-sub {
+        margin-top: 18px;
+        font-size: 0.9rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.75;
+        max-width: 400px;
+      }
+      .hero-image {
+        position: relative;
+        overflow: hidden;
+        height: 320px;
+      }
+      .hero-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.7s ease;
+        display: block;
+      }
+      .hero-image:hover img {
+        transform: scale(1.04);
+      }
+      .hero-image-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          transparent 50%,
+          rgba(26, 32, 20, 0.5) 100%
+        );
+      }
+      .hero-image-cap {
+        position: absolute;
+        bottom: 16px;
+        left: 20px;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.6rem;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      /* ── SELECTOR ── */
+      #selector {
+        border-bottom: 1px solid var(--border);
+      }
+      .selector-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .selector-col {
+        padding: 36px 40px;
+        border-right: 1px solid var(--border);
+      }
+      .selector-col:last-child {
+        border-right: none;
+      }
+      .sel-label {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 12px;
+      }
+      .select-wrap {
+        position: relative;
+      }
+      .select-wrap select {
+        width: 100%;
+        padding: 12px 40px 12px 14px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.9rem;
+        color: var(--text);
+        appearance: none;
+        outline: none;
+        cursor: pointer;
+        letter-spacing: 0.04em;
+        transition: border-color 0.2s;
+      }
+      .select-wrap select:focus {
+        border-color: var(--plant);
+      }
+      .select-wrap::after {
+        content: "";
+        position: absolute;
+        right: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 6px solid var(--muted);
+        pointer-events: none;
+      }
+      .sel-example {
+        margin-top: 10px;
+        padding: 8px 14px;
+        background: var(--bg2);
+        border-left: 2px solid var(--plant);
+        font-size: 0.74rem;
+        font-weight: 300;
+        color: var(--muted);
+        font-style: italic;
+      }
+      .selector-cta {
+        padding: 28px 40px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+      .recommend-btn {
+        padding: 13px 28px;
+        background: var(--plant);
+        color: #fff;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+      }
+      .recommend-btn:hover {
+        background: var(--plant2);
+        transform: translateX(3px);
+      }
+      .recommend-btn svg {
+        width: 14px;
+        height: 14px;
+      }
+      .selector-hint {
+        font-size: 0.78rem;
+        font-weight: 300;
+        color: var(--dim);
+        font-style: italic;
+      }
+
+      /* ── RECOMMENDATIONS ── */
+      #recommendations {
+        border-bottom: 1px solid var(--border);
+      }
+      .soil-fact-bar {
+        padding: 14px 80px;
+        background: rgba(42, 122, 58, 0.05);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .soil-fact-bar svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+      }
+      .soil-fact-text {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.7rem;
+        font-weight: 400;
+        letter-spacing: 0.06em;
+        color: var(--plant);
+        font-style: italic;
+      }
+      .rec-body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .plants-col {
+        padding: 40px 56px 40px 80px;
+        border-right: 1px solid var(--border);
+      }
+      .info-col {
+        padding: 40px 80px 40px 56px;
+      }
+      .col-title {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--plant);
+        margin-bottom: 22px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .col-title::before {
+        content: "";
+        width: 12px;
+        height: 1px;
+        background: var(--plant);
+        opacity: 0.4;
+      }
+      .plant-row {
+        display: flex;
+        align-items: center;
+        padding: 13px 0;
+        border-bottom: 1px solid var(--border);
+        gap: 14px;
+      }
+      .plant-row:last-child {
+        border-bottom: none;
+      }
+      .plant-num {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        color: var(--plant);
+        flex-shrink: 0;
+        width: 20px;
+      }
+      .plant-info {
+        flex: 1;
+      }
+      .plant-name {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text);
+        margin-bottom: 2px;
+      }
+      .plant-sub {
+        font-size: 0.73rem;
+        font-weight: 300;
+        color: var(--muted);
+        font-style: italic;
+      }
+      .plant-days {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--dim);
+        text-align: right;
+        flex-shrink: 0;
+      }
+      .info-row {
+        padding: 14px 0;
+        border-bottom: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        gap: 14px;
+        align-items: center;
+      }
+      .info-row:last-child {
+        border-bottom: none;
+      }
+      .info-key {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .info-key svg {
+        width: 12px;
+        height: 12px;
+        flex-shrink: 0;
+      }
+      .info-val {
+        padding: 9px 14px;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.82rem;
+        font-weight: 400;
+        color: var(--text);
+        letter-spacing: 0.04em;
+      }
+      .info-val.sun-val {
+        border-left: 2px solid var(--sun);
+      }
+      .info-val.soil-val {
+        border-left: 2px solid var(--plant);
+      }
+      .info-val.water-val {
+        border-left: 2px solid var(--water);
+      }
+      .info-val.time-val {
+        border-left: 2px solid var(--border2);
+      }
+
+      /* ── SOIL TYPES ── */
+      #soil-types {
+        border-bottom: 1px solid var(--border);
+      }
+      .soil-cards {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+      }
+      .soil-card {
+        padding: 32px 24px;
+        border-right: 1px solid var(--border);
+        transition: background 0.2s;
+      }
+      .soil-card:last-child {
+        border-right: none;
+      }
+      .soil-card:hover {
+        background: var(--bg2);
+      }
+      .soil-n {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.58rem;
+        letter-spacing: 0.2em;
+        color: var(--plant);
+        font-weight: 700;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+      }
+      .soil-swatch {
+        width: 28px;
+        height: 6px;
+        margin-bottom: 14px;
+      }
+      .soil-card h4 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text);
+        margin-bottom: 7px;
+      }
+      .soil-card p {
+        font-size: 0.76rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+      .soil-tag {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        color: var(--plant);
+        font-style: italic;
+        line-height: 1.55;
+      }
+
+      /* ── SOIL TABLE ── */
+      #soil-table {
+        border-bottom: 1px solid var(--border);
+      }
+      .table-wrap {
+        padding: 0 80px 40px;
+        overflow-x: auto;
+      }
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .data-table th {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.63rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        text-align: left;
+        background: var(--bg2);
+      }
+      .data-table td {
+        font-size: 0.8rem;
+        font-weight: 300;
+        color: var(--text);
+        padding: 9px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .data-table tr:hover td {
+        background: var(--bg2);
+      }
+      .data-table td:first-child {
+        font-weight: 500;
+      }
+      .data-table td:nth-child(2) {
+        color: var(--muted);
+      }
+      .data-table td:last-child {
+        font-family: "Barlow Condensed", sans-serif;
+        letter-spacing: 0.04em;
+        color: var(--dim);
+      }
+
+      /* ── SUNLIGHT ── */
+      #sunlight {
+        border-bottom: 1px solid var(--border);
+      }
+      .sun-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .sun-card {
+        padding: 36px 32px;
+        border-right: 1px solid var(--border);
+        transition: background 0.2s;
+      }
+      .sun-card:last-child {
+        border-right: none;
+      }
+      .sun-card:hover {
+        background: var(--bg2);
+      }
+      .sun-n {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.58rem;
+        letter-spacing: 0.2em;
+        color: var(--sun);
+        font-weight: 700;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+      }
+      .sun-card h4 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text);
+        margin-bottom: 8px;
+      }
+      .sun-card p {
+        font-size: 0.8rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.7;
+        margin-bottom: 14px;
+      }
+      .sun-hrs {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        color: var(--sun);
+        margin-bottom: 8px;
+      }
+      .sun-bar {
+        height: 3px;
+        background: var(--border);
+        margin-bottom: 16px;
+      }
+      .sun-fill {
+        height: 100%;
+        background: var(--sun);
+      }
+      .sun-plants {
+        font-size: 0.76rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.72;
+      }
+      .sun-plants strong {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      /* ── SUNLIGHT TABLE ── */
+      #sun-table {
+        border-bottom: 1px solid var(--border);
+      }
+      .sun-table-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .sun-table-col {
+        border-right: 1px solid var(--border);
+        overflow: hidden;
+      }
+      .sun-table-col:last-child {
+        border-right: none;
+      }
+      .sun-table-col-head {
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg2);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .sun-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--sun);
+        flex-shrink: 0;
+      }
+      .sun-dot.partial {
+        opacity: 0.6;
+      }
+      .sun-dot.shade {
+        opacity: 0.3;
+      }
+      .sun-table-col-head span {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .sun-inner-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .sun-inner-table th {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--dim);
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg2);
+        text-align: left;
+      }
+      .sun-inner-table td {
+        font-size: 0.78rem;
+        font-weight: 300;
+        color: var(--text);
+        padding: 8px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .sun-inner-table td:last-child {
+        color: var(--muted);
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.72rem;
+        letter-spacing: 0.06em;
+      }
+      .sun-inner-table tr:last-child td {
+        border-bottom: none;
+      }
+      .sun-inner-table tr:hover td {
+        background: var(--bg2);
+      }
+
+      /* ── FOOTER ── */
+      .container {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .footer-top {
+        background-color: #f7f7f7;
+        height: 236px;
+        display: flex;
+        align-items: center;
+      }
+
+      .footer-top-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 194px;
+        width: 100%;
+      }
+
+      .footer-brand {
+        font-size: 48px;
+        font-weight: 700;
+        color: #000000;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 48px;
+      }
+
+      .footer-links a {
+        text-decoration: none;
+        color: #000000;
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .footer-bottom {
+        background-color: #ffffff;
+        height: 264px;
+        border-top: 1px solid #e6e6e6;
+        display: flex;
+        align-items: flex-start;
+        padding-top: 96px;
+        box-sizing: border-box;
+      }
+
+      .footer-bottom-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 653px 0 653px;
+        width: 100%;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .footer-logo-small {
+        font-weight: 700;
+        font-size: 24px;
+        letter-spacing: 0.05em;
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .icon-box {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .icon-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+
+      @media (max-width: 768px) {
+        .footer-top-container {
+          flex-direction: column;
+          gap: 30px;
+          padding: 0 20px;
+        }
+        .footer-bottom-container {
+          padding: 0 20px;
+        }
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 1100px) {
+        .header-container,
+        .anchor-nav,
+        .section-head,
+        .soil-fact-bar,
+        .plants-col,
+        .info-col,
+        .table-wrap,
+        .selector-cta,
+        footer {
+          padding-left: 32px;
+          padding-right: 32px;
+        }
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 0;
+        }
+        .hero-image {
+          display: none;
+        }
+        .selector-grid {
+          grid-template-columns: 1fr;
+        }
+        .selector-col {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .rec-body {
+          grid-template-columns: 1fr;
+        }
+        .plants-col {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .soil-cards {
+          grid-template-columns: 1fr 1fr;
+        }
+        .soil-card:nth-child(even) {
+          border-right: none;
+        }
+        .sun-cards {
+          grid-template-columns: 1fr;
+        }
+        .sun-card {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .sun-table-grid {
+          grid-template-columns: 1fr;
+        }
+        .sun-table-col {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .anchor-links {
+          gap: 0;
+          overflow-x: auto;
+        }
+      }
+      @media (max-width: 640px) {
+        .navigation {
+          display: none;
+        }
+        .soil-cards {
+          grid-template-columns: 1fr;
+        }
+        .soil-card {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── NAV ── -->
+    <section id="header-section">
+      <div class="container header-container">
+        <div class="logo">
+          <div class="logo-text">GREENINJA</div>
+        </div>
+        <nav class="navigation">
+          <div class="nav-links">
+            <a href="index.html" class="nav-item">Home</a>
+            <div class="nav-item dropdown">
+              <span class="dropdown-label"
+                >Features
+                <svg
+                  class="chevron"
+                  viewBox="0 0 12 8"
+                  fill="none"
+                  width="11"
+                  height="11"
+                >
+                  <path
+                    d="M1 1l5 5 5-5"
+                    stroke="#000000"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <ul class="dropdown-menu">
+                <li><a href="plants.html">Plant Cultivation</a></li>
+                <li><a href="rain.html">Rain Harvest Calculator</a></li>
+                <li><a href="waste.html">Waste Management</a></li>
+              </ul>
+            </div>
+            <a href="about.html" class="nav-item">About</a>
+          </div>
+          <div class="nav-button-wrapper">
+            <button class="contact-btn">Contact Us</button>
+          </div>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ── ANCHOR NAV ── -->
+    <nav class="anchor-nav">
+      <div class="anchor-links">
+        <a href="#selector" class="anchor-link">Selector</a>
+        <a href="#recommendations" class="anchor-link">Recommendations</a>
+        <a href="#soil-types" class="anchor-link">Soil Types</a>
+        <a href="#soil-table" class="anchor-link">Soil Table</a>
+        <a href="#sunlight" class="anchor-link">Sunlight Guide</a>
+        <a href="#sun-table" class="anchor-link">Sunlight Table</a>
+      </div>
+      <div class="subbar-right">
+        <span
+          style="
+            font-family: &quot;Barlow Condensed&quot;, sans-serif;
+            font-size: 0.58rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--dim);
+          "
+          >Code Ninja</span
+        >
+        <a href="index.html" class="back-link">← Back</a>
+      </div>
+    </nav>
+
+    <!-- ── HERO ── -->
+    <div class="hero">
+      <div class="hero-left">
+        <div class="hero-eyebrow">Tool — 03 — Cultivation Guide</div>
+        <h1>
+          <span class="thin">Plant</span><br /><span class="accent"
+            >Cultivation.</span
+          >
+        </h1>
+        <p class="hero-sub">
+          Select your soil type and sunlight conditions below to get
+          personalised plant recommendations — grown smart, with minimal water
+          and maintenance.
+        </p>
+      </div>
+      <div class="hero-image">
+        <img
+          src="https://images.unsplash.com/photo-1585320806297-9794b3e4aaae?w=900&q=80"
+          alt="Greenhouse"
+        />
+        <div class="hero-image-overlay"></div>
+        <div class="hero-image-cap">
+          Native plants curated for the Kathmandu Valley climate
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SELECTOR ── -->
+    <section id="selector">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-eyebrow">Configure Your Conditions</div>
+          <h2>Get Plant Recommendations</h2>
+        </div>
+        <span class="sec-num">.01</span>
+      </div>
+      <div class="selector-grid">
+        <div class="selector-col reveal">
+          <div class="sel-label">Soil Type</div>
+          <div class="select-wrap">
+            <select>
+              <option value="" disabled selected>Select your soil type</option>
+              <option>Sandy Soil</option>
+              <option>Clay Soil</option>
+              <option>Loamy Soil</option>
+              <option>Silty Soil</option>
+              <option>Peaty Soil</option>
+            </select>
+          </div>
+          <div class="sel-example">
+            Eg: Loamy — ideal for tomatoes, corn, wheat, rice
+          </div>
+        </div>
+        <div class="selector-col reveal reveal-d1">
+          <div class="sel-label">Sunlight Requirement</div>
+          <div class="select-wrap">
+            <select>
+              <option value="" disabled selected>
+                Select sunlight requirement
+              </option>
+              <option>Full Sun — 6–8+ hours</option>
+              <option>Partial Sun / Shade — 3–6 hours</option>
+              <option>Shade / Low Sunlight — under 3 hours</option>
+            </select>
+          </div>
+          <div class="sel-example">
+            Eg: Full Sun — tomato, potato, garlic, corn, pumpkin
+          </div>
+        </div>
+        <div class="selector-col reveal reveal-d2">
+          <div class="sel-label">Water Availability</div>
+          <div class="select-wrap">
+            <select>
+              <option value="" disabled selected>Water availability</option>
+              <option>High — daily watering available</option>
+              <option>Moderate — every 2–3 days</option>
+              <option>Low — weekly or rainwater only</option>
+              <option>Drought tolerant — minimal water</option>
+            </select>
+          </div>
+          <div class="sel-example">
+            Eg: Moderate — most vegetables and leafy greens
+          </div>
+        </div>
+      </div>
+      <div class="selector-cta">
+        <button class="recommend-btn">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M12 2C7 2 4 7 4 12c0 3 1.5 5.5 4 7L12 22l4-3c2.5-1.5 4-4 4-7 0-5-3-10-8-10z"
+            />
+            <path d="M12 7v8M9 10l3-3 3 3" />
+          </svg>
+          Get Recommendations
+        </button>
+        <span class="selector-hint"
+          >Results shown below based on your selection</span
+        >
+      </div>
+    </section>
+
+    <!-- ── RECOMMENDATIONS ── -->
+    <section id="recommendations">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-eyebrow">Suggested Plants</div>
+          <h2>Recommended Plants</h2>
+        </div>
+        <span class="sec-num">.02</span>
+      </div>
+      <div class="soil-fact-bar">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#2a7a3a"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M12 2C7 2 4 7 4 12c0 3 1.5 5 4 6.5L12 21l4-2.5C18.5 17 20 15 20 12 20 7 17 2 12 2z"
+          />
+        </svg>
+        <span class="soil-fact-text"
+          >Fact: Loamy soil retains up to 30% more moisture than sandy soil —
+          reducing watering needs by half while boosting root development.</span
+        >
+      </div>
+      <div class="rec-body">
+        <div class="plants-col reveal">
+          <div class="col-title">Suggested Plants</div>
+          <div class="plant-row">
+            <div class="plant-num">01</div>
+            <div class="plant-info">
+              <div class="plant-name">Spinach</div>
+              <div class="plant-sub">
+                Spinacia oleracea — leafy green, cool season
+              </div>
+            </div>
+            <div class="plant-days">40–50 days</div>
+          </div>
+          <div class="plant-row">
+            <div class="plant-num">02</div>
+            <div class="plant-info">
+              <div class="plant-name">Radish</div>
+              <div class="plant-sub">
+                Raphanus sativus — root vegetable, fast growing
+              </div>
+            </div>
+            <div class="plant-days">25–35 days</div>
+          </div>
+          <div class="plant-row">
+            <div class="plant-num">03</div>
+            <div class="plant-info">
+              <div class="plant-name">Lettuce</div>
+              <div class="plant-sub">
+                Lactuca sativa — salad green, partial shade tolerant
+              </div>
+            </div>
+            <div class="plant-days">30–45 days</div>
+          </div>
+          <div class="plant-row">
+            <div class="plant-num">04</div>
+            <div class="plant-info">
+              <div class="plant-name">Tomato</div>
+              <div class="plant-sub">
+                Solanum lycopersicum — fruiting, full sun
+              </div>
+            </div>
+            <div class="plant-days">60–85 days</div>
+          </div>
+          <div class="plant-row">
+            <div class="plant-num">05</div>
+            <div class="plant-info">
+              <div class="plant-name">Mustard Greens</div>
+              <div class="plant-sub">
+                Brassica juncea — native to Nepal, low water
+              </div>
+            </div>
+            <div class="plant-days">40–60 days</div>
+          </div>
+        </div>
+        <div class="info-col reveal reveal-d1">
+          <div class="col-title">Additional Info</div>
+          <div class="info-row">
+            <div class="info-key">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#c8960a"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+              Sunlight
+            </div>
+            <div class="info-val sun-val">
+              Full Sun — 6–8+ hours direct daily
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="info-key">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#2a7a3a"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M12 2C7 2 4 7 4 12c0 3 1.5 5 4 6.5L12 21l4-2.5C18.5 17 20 15 20 12 20 7 17 2 12 2z"
+                />
+              </svg>
+              Soil Type
+            </div>
+            <div class="info-val soil-val">
+              Loamy — well-draining, nutrient-rich
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="info-key">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#1a78c0"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+              </svg>
+              Water Needs
+            </div>
+            <div class="info-val water-val">Moderate — every 2–3 days</div>
+          </div>
+          <div class="info-row">
+            <div class="info-key">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#8a8878"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <polyline points="12 6 12 12 15.5 15.5" />
+              </svg>
+              Avg. Time
+            </div>
+            <div class="info-val time-val">30–85 days to harvest</div>
+          </div>
+          <div class="info-row">
+            <div class="info-key">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#8a8878"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M3 9h18M9 21V9" />
+              </svg>
+              Best Season
+            </div>
+            <div class="info-val time-val">Spring &amp; Autumn (Nepal)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SOIL TYPES ── -->
+    <section id="soil-types">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-eyebrow">Soil Reference</div>
+          <h2>Soil Types &amp; Best Plants</h2>
+        </div>
+        <span class="sec-num">.03</span>
+      </div>
+      <div class="soil-cards">
+        <div class="soil-card reveal">
+          <div class="soil-n">.01 Sandy</div>
+          <div class="soil-swatch" style="background: #dfc898"></div>
+          <h4>Sandy Soil</h4>
+          <p>
+            Drains quickly, warms fast in spring. Low nutrients — needs regular
+            compost. Great for root crops.
+          </p>
+          <div class="soil-tag">
+            Carrot · Potato · Radish · Watermelon · Peanuts · Cucumber · Garlic
+            · Onion
+          </div>
+        </div>
+        <div class="soil-card reveal reveal-d1">
+          <div class="soil-n">.02 Clay</div>
+          <div class="soil-swatch" style="background: #9a7858"></div>
+          <h4>Clay Soil</h4>
+          <p>
+            Heavy, slow-draining but nutrient-rich. Needs aeration and compost
+            to improve structure.
+          </p>
+          <div class="soil-tag">
+            Broccoli · Cabbage · Cauliflower · Lettuce · Beans · Peas ·
+            Sunflower · Apple Tree
+          </div>
+        </div>
+        <div class="soil-card reveal reveal-d1">
+          <div class="soil-n">.03 Loamy</div>
+          <div class="soil-swatch" style="background: #c4a47a"></div>
+          <h4>Loamy Soil</h4>
+          <p>
+            The ideal garden soil — balanced drainage, moisture and nutrients.
+            Suits most crops.
+          </p>
+          <div class="soil-tag">
+            Tomato · Corn · Wheat · Rice · Sugarcane · Spinach · Pepper ·
+            Eggplant · Pumpkin · Beans · Cucumber
+          </div>
+        </div>
+        <div class="soil-card reveal reveal-d2">
+          <div class="soil-n">.04 Silty</div>
+          <div class="soil-swatch" style="background: #b8c8a0"></div>
+          <h4>Silty Soil</h4>
+          <p>
+            Smooth texture, retains moisture well. Fertile and easy to cultivate
+            when well-drained.
+          </p>
+          <div class="soil-tag">
+            Tomato · Lettuce · Cabbage · Carrot · Onion · Peas · Potato
+          </div>
+        </div>
+        <div class="soil-card reveal reveal-d2">
+          <div class="soil-n">.05 Peaty</div>
+          <div class="soil-swatch" style="background: #6a4e38"></div>
+          <h4>Peaty Soil</h4>
+          <p>
+            Acidic, high organic matter, moisture-retaining. Excellent for
+            acid-loving plants.
+          </p>
+          <div class="soil-tag">
+            Blueberry · Cranberry · Lettuce · Spinach · Carrot · Potato
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SOIL TABLE ── -->
+    <section id="soil-table">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-eyebrow">Full Reference</div>
+          <h2>Plant × Soil × Growth Time</h2>
+        </div>
+        <span class="sec-num">.04</span>
+      </div>
+      <div class="table-wrap reveal">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Plant</th>
+              <th>Recommended Soil</th>
+              <th>Average Growth Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Carrot</td>
+              <td>Sandy, Silty</td>
+              <td>70–80 days</td>
+            </tr>
+            <tr>
+              <td>Potato</td>
+              <td>Sandy, Silty, Peaty</td>
+              <td>90–120 days</td>
+            </tr>
+            <tr>
+              <td>Radish</td>
+              <td>Sandy</td>
+              <td>25–35 days</td>
+            </tr>
+            <tr>
+              <td>Watermelon</td>
+              <td>Sandy</td>
+              <td>80–100 days</td>
+            </tr>
+            <tr>
+              <td>Peanuts</td>
+              <td>Sandy</td>
+              <td>120–150 days</td>
+            </tr>
+            <tr>
+              <td>Cucumber</td>
+              <td>Sandy, Loamy</td>
+              <td>50–70 days</td>
+            </tr>
+            <tr>
+              <td>Garlic</td>
+              <td>Sandy</td>
+              <td>240–270 days</td>
+            </tr>
+            <tr>
+              <td>Onion</td>
+              <td>Sandy, Silty</td>
+              <td>90–120 days</td>
+            </tr>
+            <tr>
+              <td>Broccoli</td>
+              <td>Clay</td>
+              <td>70–100 days</td>
+            </tr>
+            <tr>
+              <td>Cabbage</td>
+              <td>Clay, Silty</td>
+              <td>80–120 days</td>
+            </tr>
+            <tr>
+              <td>Cauliflower</td>
+              <td>Clay</td>
+              <td>85–100 days</td>
+            </tr>
+            <tr>
+              <td>Lettuce</td>
+              <td>Clay, Silty, Peaty</td>
+              <td>30–45 days</td>
+            </tr>
+            <tr>
+              <td>Beans</td>
+              <td>Clay, Loamy</td>
+              <td>50–65 days</td>
+            </tr>
+            <tr>
+              <td>Peas</td>
+              <td>Clay, Silty</td>
+              <td>60–70 days</td>
+            </tr>
+            <tr>
+              <td>Sunflower</td>
+              <td>Clay</td>
+              <td>70–100 days</td>
+            </tr>
+            <tr>
+              <td>Apple Tree</td>
+              <td>Clay</td>
+              <td>3–5 years</td>
+            </tr>
+            <tr>
+              <td>Tomato</td>
+              <td>Loamy, Silty</td>
+              <td>60–85 days</td>
+            </tr>
+            <tr>
+              <td>Corn</td>
+              <td>Loamy</td>
+              <td>60–100 days</td>
+            </tr>
+            <tr>
+              <td>Wheat</td>
+              <td>Loamy</td>
+              <td>110–130 days</td>
+            </tr>
+            <tr>
+              <td>Rice</td>
+              <td>Loamy</td>
+              <td>100–120 days</td>
+            </tr>
+            <tr>
+              <td>Sugarcane</td>
+              <td>Loamy</td>
+              <td>10–16 months</td>
+            </tr>
+            <tr>
+              <td>Spinach</td>
+              <td>Loamy, Peaty</td>
+              <td>40–50 days</td>
+            </tr>
+            <tr>
+              <td>Pepper</td>
+              <td>Loamy</td>
+              <td>60–90 days</td>
+            </tr>
+            <tr>
+              <td>Eggplant</td>
+              <td>Loamy</td>
+              <td>70–90 days</td>
+            </tr>
+            <tr>
+              <td>Pumpkin</td>
+              <td>Loamy</td>
+              <td>90–120 days</td>
+            </tr>
+            <tr>
+              <td>Blueberry</td>
+              <td>Peaty</td>
+              <td>2–3 years</td>
+            </tr>
+            <tr>
+              <td>Cranberry</td>
+              <td>Peaty</td>
+              <td>3–4 years</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── SUNLIGHT GUIDE ── -->
+    <section id="sunlight">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-eyebrow">Light Requirements</div>
+          <h2>Sunlight Guide</h2>
+        </div>
+        <span class="sec-num">.05</span>
+      </div>
+      <div class="sun-cards">
+        <div class="sun-card reveal">
+          <div class="sun-n">.01 Full Sun</div>
+          <h4>Full Sun</h4>
+          <p>Requires 6–8+ hours of direct sunlight per day.</p>
+          <div class="sun-hrs">6–8+ hours / day</div>
+          <div class="sun-bar">
+            <div class="sun-fill" style="width: 100%"></div>
+          </div>
+          <div class="sun-plants">
+            <strong>Plants</strong>Tomato · Potato · Onion · Garlic · Corn ·
+            Pumpkin · Cucumber · Eggplant · Chili Pepper · Bell Pepper ·
+            Sunflower · Okra · Watermelon · Melon · Peas · Beans
+          </div>
+        </div>
+        <div class="sun-card reveal reveal-d1">
+          <div class="sun-n">.02 Partial Sun / Shade</div>
+          <h4>Partial Sun / Partial Shade</h4>
+          <p>Requires 3–6 hours of direct sunlight per day.</p>
+          <div class="sun-hrs">3–6 hours / day</div>
+          <div class="sun-bar">
+            <div class="sun-fill" style="width: 58%"></div>
+          </div>
+          <div class="sun-plants">
+            <strong>Plants</strong>Carrot · Radish · Beetroot · Turnip · Cabbage
+            · Cauliflower · Broccoli · Lettuce · Spinach · Mustard Greens ·
+            Green Onion · Celery
+          </div>
+        </div>
+        <div class="sun-card reveal reveal-d2">
+          <div class="sun-n">.03 Shade</div>
+          <h4>Shade / Low Sunlight</h4>
+          <p>Requires less than 3 hours of direct sunlight per day.</p>
+          <div class="sun-hrs">Under 3 hours / day</div>
+          <div class="sun-bar">
+            <div class="sun-fill" style="width: 22%"></div>
+          </div>
+          <div class="sun-plants">
+            <strong>Plants</strong>Carrot · Radish · Beetroot · Turnip · Cabbage
+            · Cauliflower · Broccoli · Lettuce · Spinach · Mustard Greens ·
+            Green Onion · Celery
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SUNLIGHT TABLE ── -->
+    <section id="sun-table">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-eyebrow">Full Reference</div>
+          <h2>Plant × Sunlight Requirement</h2>
+        </div>
+        <span class="sec-num">.06</span>
+      </div>
+      <div class="sun-table-grid reveal">
+        <!-- Full Sun -->
+        <div class="sun-table-col">
+          <div class="sun-table-col-head">
+            <div class="sun-dot"></div>
+            <span>Full Sun — 6–8+ hrs</span>
+          </div>
+          <table class="sun-inner-table">
+            <thead>
+              <tr>
+                <th>Plant</th>
+                <th>Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tomato</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Potato</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Onion</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Garlic</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Corn</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Pumpkin</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Cucumber</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Eggplant</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Chili Pepper</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Bell Pepper</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Sunflower</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Okra</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Watermelon</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Melon</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Peas</td>
+                <td>Full Sun</td>
+              </tr>
+              <tr>
+                <td>Beans</td>
+                <td>Full Sun</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Partial Sun -->
+        <div class="sun-table-col">
+          <div class="sun-table-col-head">
+            <div class="sun-dot partial"></div>
+            <span>Partial Sun — 3–6 hrs</span>
+          </div>
+          <table class="sun-inner-table">
+            <thead>
+              <tr>
+                <th>Plant</th>
+                <th>Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Carrot</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Radish</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Beetroot</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Turnip</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Cabbage</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Cauliflower</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Broccoli</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Lettuce</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Spinach</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Mustard Greens</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Green Onion</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Celery</td>
+                <td>Partial Sun</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Shade -->
+        <div class="sun-table-col">
+          <div class="sun-table-col-head">
+            <div class="sun-dot shade"></div>
+            <span>Shade — under 3 hrs</span>
+          </div>
+          <table class="sun-inner-table">
+            <thead>
+              <tr>
+                <th>Plant</th>
+                <th>Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Carrot</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Radish</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Beetroot</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Turnip</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Cabbage</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Cauliflower</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Broccoli</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Lettuce</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Spinach</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Mustard Greens</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Green Onion</td>
+                <td>Partial Sun</td>
+              </tr>
+              <tr>
+                <td>Celery</td>
+                <td>Partial Sun</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer id="footer-section">
+      <!-- Top Footer -->
+      <div class="footer-top">
+        <div class="container footer-top-container">
+          <div class="footer-brand">GreeNinja</div>
+          <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Resources</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Footer -->
+      <div class="footer-bottom">
+        <div class="container footer-bottom-container">
+          <div class="footer-logo-small">GREENINJA</div>
+          <div class="social-icons">
+            <div class="icon-box">
+              <img src="images/icons8-facebook-90.png" alt="Facebook" />
+            </div>
+            <div class="icon-box">
+              <img src="images/icons8-linkedin-90.png" alt="LinkedIn" />
+            </div>
+            <div class="icon-box">
+              <img src="images/icons8-youtube-90.png" alt="YouTube" />
+            </div>
+            <div class="icon-box">
+              <img src="images/icons8-instagram-90.png" alt="Instagram" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const obs = new IntersectionObserver(
+        (e) =>
+          e.forEach((x) => {
+            if (x.isIntersecting) {
+              x.target.classList.add("vis");
+              obs.unobserve(x.target);
+            }
+          }),
+        { threshold: 0.08 },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
+    </script>
+  </body>
+</html>

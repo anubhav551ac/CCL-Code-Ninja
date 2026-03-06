@@ -1,1 +1,1 @@
-// No interactive functionality required for this static layout
+// No interactive logic required for this static layout

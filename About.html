@@ -1,0 +1,1441 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GreeNinja — About &amp; Contact</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300;400;600;700;800&family=Barlow:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #f4f1e8;
+        --bg2: #edeade;
+        --panel: #e6e2d4;
+        --border: #ccc8b8;
+        --border2: #b8b4a4;
+        --dim: #8a8878;
+        --muted: #5a6050;
+        --text: #1a2014;
+        --green: #3d7a5a;
+        --accent: #2a7a3a;
+        --accent2: #1e5c2a;
+        --lime: #c8d44e;
+      }
+
+      html,
+      body {
+        font-family: "Barlow", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      /* ── NAV ── */
+      #header-section {
+        background-color: #3d7a5a;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 200;
+        box-shadow: 0 2px 16px rgba(20, 60, 35, 0.15);
+      }
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 80px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .logo-text {
+        font-weight: 700;
+        font-size: 32px;
+        color: #000000;
+      }
+      .navigation {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+      }
+      nav .nav-links {
+        display: flex;
+        gap: 48px;
+      }
+      .nav-item,
+      .dropdown-label {
+        text-decoration: none;
+        color: #000000;
+        font-size: 18px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: "Barlow", sans-serif;
+      }
+      .nav-item:hover,
+      .dropdown-label:hover {
+        color: #1f4d2a;
+      }
+      .nav-button-wrapper {
+        display: flex;
+        align-items: center;
+      }
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .chevron {
+        transition: transform 0.2s;
+        flex-shrink: 0;
+      }
+      .dropdown:hover .chevron {
+        transform: rotate(180deg);
+      }
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 12px;
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+        padding: 12px 0;
+        min-width: 220px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition:
+          opacity 180ms ease,
+          transform 180ms ease,
+          visibility 180ms;
+        z-index: 20;
+        list-style: none;
+      }
+      .dropdown:hover .dropdown-menu,
+      .dropdown:focus-within .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .dropdown-menu li {
+        list-style: none;
+      }
+      .dropdown-menu a {
+        display: block;
+        padding: 10px 18px;
+        color: #0e2d1c;
+        text-decoration: none;
+        font-weight: 600;
+        font-family: "Barlow", sans-serif;
+        font-size: 15px;
+      }
+      .dropdown-menu a:hover {
+        background: rgba(29, 98, 60, 0.08);
+      }
+      .contact-btn {
+        background-color: #000000;
+        color: #3d7a5a;
+        padding: 14px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 16px;
+        font-family: "Barlow", sans-serif;
+        border: none;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+      }
+      .contact-btn:hover {
+        background: #1a1a1a;
+        transform: translateY(-1px);
+      }
+
+      /* ── SUBBAR ── */
+      .subbar {
+        background: var(--bg2);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 80px;
+        height: 38px;
+      }
+      .subbar span {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+      .subbar a {
+        color: var(--muted);
+        text-decoration: none;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .subbar a:hover {
+        color: var(--text);
+      }
+
+      /* ── ANCHOR TABS ── */
+      .tab-bar {
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        padding: 0 80px;
+      }
+      .tab-link {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--dim);
+        padding: 14px 24px 13px;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+      }
+      .tab-link:hover {
+        color: var(--accent);
+      }
+      .tab-link.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+      }
+
+      /* ── SHARED SECTION UTILS ── */
+      .section-eyebrow {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .section-eyebrow::before {
+        content: "";
+        width: 16px;
+        height: 1px;
+        background: var(--accent);
+        opacity: 0.5;
+      }
+      .sec-num {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        color: var(--border2);
+        letter-spacing: 0.1em;
+      }
+      .section-head {
+        padding: 28px 80px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+      .section-head h2 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text);
+      }
+
+      /* reveal on scroll */
+      .reveal {
+        opacity: 0;
+        transform: translateY(16px);
+        transition:
+          opacity 0.55s ease,
+          transform 0.55s ease;
+      }
+      .reveal.d1 {
+        transition-delay: 0.1s;
+      }
+      .reveal.d2 {
+        transition-delay: 0.2s;
+      }
+      .reveal.d3 {
+        transition-delay: 0.3s;
+      }
+      .reveal.vis {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* ═══════════════════════════════════
+       ABOUT SECTION
+    ═══════════════════════════════════ */
+
+      /* hero */
+      .about-hero {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-bottom: 1px solid var(--border);
+      }
+      .about-hero-left {
+        padding: 72px 64px 64px 80px;
+        border-right: 1px solid var(--border);
+      }
+      .about-hero h1 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 800;
+        font-size: clamp(3.2rem, 6vw, 5.5rem);
+        line-height: 0.9;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        color: var(--text);
+        margin-bottom: 28px;
+      }
+      .about-hero h1 .thin {
+        font-weight: 200;
+        color: var(--dim);
+      }
+      .about-hero h1 .accent {
+        color: var(--accent);
+      }
+      .about-hero-tagline {
+        font-size: 1rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.8;
+        max-width: 380px;
+      }
+      .about-hero-right {
+        padding: 72px 80px 64px 64px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 40px;
+      }
+      .mission-block {
+      }
+      .mission-label {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .mission-label::before {
+        content: "";
+        width: 12px;
+        height: 1px;
+        background: var(--accent);
+        opacity: 0.4;
+      }
+      .mission-text {
+        font-size: 0.88rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      .mission-text strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      .about-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        border-top: 1px solid var(--border);
+        padding-top: 28px;
+      }
+      .stat-item {
+        padding-right: 24px;
+        border-right: 1px solid var(--border);
+        margin-right: 24px;
+      }
+      .stat-item:last-child {
+        border-right: none;
+        margin-right: 0;
+        padding-right: 0;
+      }
+      .stat-num {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 800;
+        font-size: 2rem;
+        line-height: 1;
+        color: var(--accent);
+        letter-spacing: -0.02em;
+      }
+      .stat-label {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 400;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-top: 4px;
+      }
+
+      /* problem + solution */
+      .problem-solution {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-bottom: 1px solid var(--border);
+      }
+      .ps-col {
+        padding: 52px 64px;
+        border-right: 1px solid var(--border);
+      }
+      .ps-col:last-child {
+        border-right: none;
+      }
+      .ps-icon {
+        width: 48px;
+        height: 48px;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+        transition: border-color 0.2s;
+      }
+      .ps-col:hover .ps-icon {
+        border-color: rgba(42, 122, 58, 0.4);
+      }
+      .ps-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+      .ps-col h3 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text);
+        margin-bottom: 16px;
+      }
+      .ps-col p {
+        font-size: 0.87rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      /* features strip */
+      .features-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border-bottom: 1px solid var(--border);
+      }
+      .feat-col {
+        padding: 40px 36px;
+        border-right: 1px solid var(--border);
+        transition: background 0.2s;
+      }
+      .feat-col:last-child {
+        border-right: none;
+      }
+      .feat-col:hover {
+        background: var(--bg2);
+      }
+      .feat-num {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.58rem;
+        letter-spacing: 0.2em;
+        color: var(--accent);
+        font-weight: 700;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+      }
+      .feat-icon {
+        width: 38px;
+        height: 38px;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 18px;
+        transition: border-color 0.2s;
+      }
+      .feat-col:hover .feat-icon {
+        border-color: rgba(42, 122, 58, 0.4);
+      }
+      .feat-icon svg {
+        width: 16px;
+        height: 16px;
+      }
+      .feat-col h4 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text);
+        margin-bottom: 10px;
+      }
+      .feat-col p {
+        font-size: 0.78rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      .feat-link {
+        margin-top: 20px;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: gap 0.2s;
+        text-decoration: none;
+      }
+      .feat-col:hover .feat-link {
+        gap: 10px;
+      }
+
+      /* goal block */
+      .goal-block {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        border-bottom: 1px solid var(--border);
+      }
+      .goal-left {
+        padding: 52px 40px;
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: var(--text);
+      }
+      .goal-label {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.35);
+      }
+      .goal-big {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 800;
+        font-size: 5rem;
+        line-height: 1;
+        color: rgba(255, 255, 255, 0.06);
+        letter-spacing: -0.02em;
+        margin-top: 8px;
+      }
+      .goal-right {
+        padding: 52px 80px;
+      }
+      .goal-right blockquote {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 700;
+        font-size: clamp(1.4rem, 3vw, 2.2rem);
+        line-height: 1.25;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        color: var(--text);
+        margin-bottom: 24px;
+      }
+      .goal-right blockquote em {
+        color: var(--accent);
+        font-style: normal;
+      }
+      .goal-right p {
+        font-size: 0.87rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.8;
+        max-width: 560px;
+      }
+
+      /* ═══════════════════════════════════
+       CONTACT SECTION
+    ═══════════════════════════════════ */
+      .contact-hero {
+        padding: 64px 80px 56px;
+        border-bottom: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: end;
+        gap: 40px;
+      }
+      .contact-hero h1 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 800;
+        font-size: clamp(3rem, 6vw, 5.5rem);
+        line-height: 0.92;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        color: var(--text);
+      }
+      .contact-hero h1 .thin {
+        font-weight: 200;
+        color: var(--dim);
+      }
+      .contact-hero h1 .accent {
+        color: var(--accent);
+      }
+      .contact-hero-sub {
+        margin-top: 18px;
+        font-size: 0.9rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.75;
+        max-width: 400px;
+      }
+      .contact-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+      }
+      .badge-tag {
+        padding: 8px 18px;
+        background: rgba(42, 122, 58, 0.08);
+        border: 1px solid rgba(42, 122, 58, 0.25);
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+      .badge-lbl {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.58rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+
+      /* contact grid */
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-bottom: 1px solid var(--border);
+      }
+
+      /* contact details */
+      .contact-details {
+        padding: 52px 64px 52px 80px;
+        border-right: 1px solid var(--border);
+      }
+      .contact-intro {
+        font-size: 0.87rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.8;
+        margin-bottom: 36px;
+        max-width: 380px;
+      }
+
+      .contact-items {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 22px 0;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.15s;
+      }
+      .contact-item:first-child {
+        padding-top: 0;
+      }
+      .contact-item:last-child {
+        border-bottom: none;
+      }
+      .contact-item-icon {
+        width: 38px;
+        height: 38px;
+        border: 1px solid var(--border);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color 0.2s;
+      }
+      .contact-item:hover .contact-item-icon {
+        border-color: rgba(42, 122, 58, 0.4);
+      }
+      .contact-item-icon svg {
+        width: 15px;
+        height: 15px;
+      }
+      .contact-item-body {
+      }
+      .contact-item-label {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-bottom: 4px;
+      }
+      .contact-item-val {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: var(--text);
+      }
+      .contact-item-val a {
+        color: var(--text);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .contact-item-val a:hover {
+        color: var(--accent);
+      }
+      .contact-item-sub {
+        font-size: 0.75rem;
+        font-weight: 300;
+        color: var(--dim);
+        margin-top: 2px;
+      }
+
+      /* message / feedback panel */
+      .contact-message {
+        padding: 52px 80px 52px 64px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+      .msg-intro {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .msg-quote {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 700;
+        font-size: 1.4rem;
+        line-height: 1.3;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        color: var(--text);
+      }
+      .msg-quote em {
+        color: var(--accent);
+        font-style: normal;
+      }
+      .msg-body {
+        font-size: 0.87rem;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      .msg-divider {
+        height: 1px;
+        background: var(--border);
+      }
+      .msg-collab-head {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--text);
+        margin-bottom: 12px;
+      }
+      .collab-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .collab-tag {
+        padding: 7px 14px;
+        border: 1px solid var(--border);
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+      .collab-tag:hover {
+        border-color: rgba(42, 122, 58, 0.4);
+        color: var(--accent);
+      }
+
+      /* ── FOOTER ── */
+      .container {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .footer-top {
+        background-color: #f7f7f7;
+        height: 236px;
+        display: flex;
+        align-items: center;
+      }
+
+      .footer-top-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 194px;
+        width: 100%;
+      }
+
+      .footer-brand {
+        font-size: 48px;
+        font-weight: 700;
+        color: #000000;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 48px;
+      }
+
+      .footer-links a {
+        text-decoration: none;
+        color: #000000;
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .footer-bottom {
+        background-color: #ffffff;
+        height: 264px;
+        border-top: 1px solid #e6e6e6;
+        display: flex;
+        align-items: flex-start;
+        padding-top: 96px;
+        box-sizing: border-box;
+      }
+
+      .footer-bottom-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 653px 0 653px;
+        width: 100%;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .footer-logo-small {
+        font-weight: 700;
+        font-size: 24px;
+        letter-spacing: 0.05em;
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .icon-box {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .icon-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+
+      @media (max-width: 768px) {
+        .footer-top-container {
+          flex-direction: column;
+          gap: 30px;
+          padding: 0 20px;
+        }
+        .footer-bottom-container {
+          padding: 0 20px;
+        }
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 1024px) {
+        .header-container,
+        .subbar,
+        .tab-bar,
+        .contact-hero,
+        .goal-right,
+        footer {
+          padding-left: 32px;
+          padding-right: 32px;
+        }
+        .about-hero,
+        .problem-solution,
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+        .about-hero-left,
+        .about-hero-right {
+          padding: 40px 32px;
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .ps-col {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+          padding: 36px 32px;
+        }
+        .features-strip {
+          grid-template-columns: 1fr;
+        }
+        .feat-col {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .goal-block {
+          grid-template-columns: 1fr;
+        }
+        .goal-left {
+          display: none;
+        }
+        .goal-right {
+          padding: 40px 32px;
+        }
+        .contact-details,
+        .contact-message {
+          padding: 40px 32px;
+        }
+        .contact-details {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+      }
+      @media (max-width: 640px) {
+        .navigation {
+          display: none;
+        }
+        .about-stats {
+          grid-template-columns: 1fr 1fr;
+        }
+        .contact-hero {
+          grid-template-columns: 1fr;
+        }
+        .contact-badge {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── NAV ── -->
+    <section id="header-section">
+      <div class="container header-container">
+        <div class="logo">
+          <div class="logo-text">GREENINJA</div>
+        </div>
+        <nav class="navigation">
+          <div class="nav-links">
+            <a href="index.html" class="nav-item">Home</a>
+            <div class="nav-item dropdown">
+              <span class="dropdown-label"
+                >Features
+                <svg
+                  class="chevron"
+                  viewBox="0 0 12 8"
+                  fill="none"
+                  width="11"
+                  height="11"
+                >
+                  <path
+                    d="M1 1l5 5 5-5"
+                    stroke="#000000"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <ul class="dropdown-menu">
+                <li><a href="plants.html">Plant Cultivation</a></li>
+                <li><a href="rain.html">Rain Harvest Calculator</a></li>
+                <li><a href="waste.html">Waste Management</a></li>
+              </ul>
+            </div>
+            <a href="about.html" class="nav-item">About</a>
+          </div>
+          <div class="nav-button-wrapper">
+            <button class="contact-btn">Contact Us</button>
+          </div>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ── SUBBAR ── -->
+    <div class="subbar">
+      <span>Code Ninja — About &amp; Contact</span>
+      <a href="index.html">← Home</a>
+    </div>
+
+    <!-- ── TAB BAR ── -->
+    <div class="tab-bar">
+      <a href="#about" class="tab-link active" id="tab-about">About Us</a>
+      <a href="#contact" class="tab-link" id="tab-contact">Contact Us</a>
+    </div>
+
+    <!-- ══════════════════════════════════
+     ABOUT
+══════════════════════════════════ -->
+    <div id="about">
+      <!-- HERO -->
+      <div class="about-hero">
+        <div class="about-hero-left reveal">
+          <div class="section-eyebrow">Who We Are</div>
+          <h1>
+            <span class="thin">Green</span><br /><span class="accent"
+              >Ninja.</span
+            >
+          </h1>
+          <p class="about-hero-tagline">
+            An environmental awareness and sustainability platform designed to
+            help individuals make smarter decisions about waste, water, and
+            plant cultivation.
+          </p>
+        </div>
+        <div class="about-hero-right reveal d1">
+          <div class="mission-block">
+            <div class="mission-label">Our Mission</div>
+            <p class="mission-text">
+              Modern environmental problems such as
+              <strong>improper waste disposal</strong>,
+              <strong>water shortages</strong>, and
+              <strong>declining soil health</strong> are becoming increasingly
+              common. Green Ninja aims to address these issues by providing
+              simple digital tools that allow users to better understand and
+              manage natural resources in their daily lives.
+            </p>
+          </div>
+          <div class="about-stats">
+            <div class="stat-item">
+              <div class="stat-num">3</div>
+              <div class="stat-label">Core Tools</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">27+</div>
+              <div class="stat-label">Plant Profiles</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">5</div>
+              <div class="stat-label">Soil Types</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROBLEM + SOLUTION -->
+      <div class="problem-solution">
+        <div class="ps-col reveal">
+          <div class="section-eyebrow">The Problem</div>
+          <div class="ps-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#b84a1a"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <circle cx="12" cy="16" r="0.5" fill="#b84a1a" />
+            </svg>
+          </div>
+          <h3>Pressing Environmental Challenges</h3>
+          <p>
+            Improper waste disposal pollutes soil and waterways. Water scarcity
+            is intensifying as rainwater goes uncaptured. Soil degradation from
+            unsustainable farming reduces crop yields. These challenges affect
+            everyday life — especially in rapidly urbanising areas like the
+            Kathmandu Valley — yet individuals often lack the information to act
+            effectively.
+          </p>
+        </div>
+        <div class="ps-col reveal d1">
+          <div class="section-eyebrow">Our Approach</div>
+          <div class="ps-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#2a7a3a"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M12 2C7 2 4 7 4 12c0 3 1.5 5.5 4 7L12 22l4-3c2.5-1.5 4-4 4-7 0-5-3-10-8-10z"
+              />
+              <path d="M12 7v8M9 10l3-3 3 3" />
+            </svg>
+          </div>
+          <h3>Practical Digital Tools</h3>
+          <p>
+            By combining environmental information with practical tools, Green
+            Ninja supports activities such as home gardening, sustainable
+            farming, and long-term ecological restoration efforts like forest
+            recovery. We believe that small actions taken by individuals can
+            contribute to a larger positive impact on the environment.
+          </p>
+        </div>
+      </div>
+
+      <!-- FEATURES STRIP -->
+      <div class="section-head reveal">
+        <div>
+          <div class="section-eyebrow">What We Offer</div>
+          <h2>Platform Features</h2>
+        </div>
+        <span class="sec-num">.01</span>
+      </div>
+      <div class="features-strip">
+        <div class="feat-col reveal">
+          <div class="feat-num">.01 — Feature</div>
+          <div class="feat-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#2a7a3a"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6l-1 14H6L5 6" />
+              <path d="M10 11v6M14 11v6" />
+              <path d="M9 6V4h6v2" />
+            </svg>
+          </div>
+          <h4>Waste Management</h4>
+          <p>
+            Identify whether your waste is degradable or non-degradable. Route
+            organic waste into the right compost type and locate the nearest
+            Kathmandu Valley disposal facility for non-recyclable items.
+          </p>
+          <a href="waste.html" class="feat-link">Explore tool →</a>
+        </div>
+        <div class="feat-col reveal d1">
+          <div class="feat-num">.02 — Feature</div>
+          <div class="feat-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#2a7a3a"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+            </svg>
+          </div>
+          <h4>Rainwater Harvest Calculator</h4>
+          <p>
+            Estimate how much rainwater your roof can collect and reuse. Enter
+            your roof type, area, and province to calculate monthly and annual
+            collection potential across all of Nepal's climate zones.
+          </p>
+          <a href="rain.html" class="feat-link">Explore tool →</a>
+        </div>
+        <div class="feat-col reveal d2">
+          <div class="feat-num">.03 — Feature</div>
+          <div class="feat-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#2a7a3a"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 22V12M12 12C12 12 8 9 4 9s-4 4 0 8" />
+              <path d="M12 12c0 0 4-3 8-3s4 4 0 8" />
+            </svg>
+          </div>
+          <h4>Plant Cultivation Guide</h4>
+          <p>
+            Grow plants suited to your local conditions. Select your soil type
+            and sunlight availability to get plant recommendations with growth
+            timelines, water needs, and seasonal guidance for Nepal.
+          </p>
+          <a href="plants.html" class="feat-link">Explore tool →</a>
+        </div>
+      </div>
+
+      <!-- GOAL BLOCK -->
+      <div class="goal-block reveal">
+        <div class="goal-left">
+          <div class="goal-label">Our Goal</div>
+          <div class="goal-big">GO</div>
+        </div>
+        <div class="goal-right">
+          <blockquote>
+            Small actions by <em>individuals</em> can contribute to a larger
+            <em>positive impact</em> on the environment.
+          </blockquote>
+          <p>
+            Through features like Waste Management, Rainwater Harvest
+            Calculation, and Plant Cultivation Guidance, the platform encourages
+            users to adopt environmentally responsible habits — recycling
+            organic waste into compost, capturing rainwater for reuse, and
+            growing plants suited to their local soil and climate. By making
+            these tools accessible and easy to use, Green Ninja supports home
+            gardening, sustainable farming, and long-term ecological
+            restoration.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- /about -->
+
+    <!-- ══════════════════════════════════
+     CONTACT
+══════════════════════════════════ -->
+    <div id="contact">
+      <!-- HERO -->
+      <div class="contact-hero reveal">
+        <div>
+          <div class="section-eyebrow">Get In Touch</div>
+          <h1>
+            <span class="thin">Con</span><span class="accent">tact.</span>
+          </h1>
+          <p class="contact-hero-sub">
+            We welcome feedback, suggestions, and collaboration opportunities.
+            If you have questions about GreeNinja or would like to contribute
+            ideas, feel free to reach out.
+          </p>
+        </div>
+        <div class="contact-badge">
+          <span class="badge-lbl">Location</span>
+          <span class="badge-tag">Kathmandu, Nepal</span>
+        </div>
+      </div>
+
+      <!-- CONTACT GRID -->
+      <div class="contact-grid">
+        <!-- DETAILS -->
+        <div class="contact-details reveal">
+          <div class="section-eyebrow">Contact Information</div>
+          <p class="contact-intro">
+            Your feedback helps us improve and continue building tools that
+            support environmental sustainability.
+          </p>
+
+          <div class="contact-items">
+            <div class="contact-item">
+              <div class="contact-item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#2a7a3a"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                  />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </div>
+              <div class="contact-item-body">
+                <div class="contact-item-label">Email</div>
+                <div class="contact-item-val">
+                  <a href="mailto:ecocycle.project@gmail.com"
+                    >ecocycle.project@gmail.com</a
+                  >
+                </div>
+                <div class="contact-item-sub">
+                  We respond within 2–3 business days
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#2a7a3a"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.07 1.18 2 2 0 012.03 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"
+                  />
+                </svg>
+              </div>
+              <div class="contact-item-body">
+                <div class="contact-item-label">Phone</div>
+                <div class="contact-item-val">+977 XXXXXXXX</div>
+                <div class="contact-item-sub">
+                  Available weekdays, 10 AM – 5 PM NPT
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#2a7a3a"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+              </div>
+              <div class="contact-item-body">
+                <div class="contact-item-label">Location</div>
+                <div class="contact-item-val">Kathmandu, Nepal</div>
+                <div class="contact-item-sub">
+                  Bagmati Province — Kathmandu Valley
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MESSAGE PANEL -->
+        <div class="contact-message reveal d1">
+          <div class="msg-intro">Why Reach Out?</div>
+          <div class="msg-quote">
+            Your feedback helps us <em>improve</em> and continue building tools
+            that support <em>environmental sustainability.</em>
+          </div>
+          <p class="msg-body">
+            Whether you've found a bug, have a suggestion for a new feature,
+            want to collaborate on an environmental project, or simply want to
+            share how GreeNinja has helped you — we'd love to hear from you.
+            Every message contributes to making the platform better for the
+            community.
+          </p>
+          <div class="msg-divider"></div>
+          <div>
+            <div class="msg-collab-head">Collaboration Areas</div>
+            <div class="collab-tags">
+              <div class="collab-tag">Waste Management</div>
+              <div class="collab-tag">Rainwater Harvesting</div>
+              <div class="collab-tag">Home Gardening</div>
+              <div class="collab-tag">Sustainable Farming</div>
+              <div class="collab-tag">Ecological Restoration</div>
+              <div class="collab-tag">Community Education</div>
+              <div class="collab-tag">Forest Recovery</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /contact -->
+
+    <!-- ── FOOTER ── -->
+    <footer id="footer-section">
+      <!-- Top Footer -->
+      <div class="footer-top">
+        <div class="container footer-top-container">
+          <div class="footer-brand">GreeNinja</div>
+          <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Resources</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Footer -->
+      <div class="footer-bottom">
+        <div class="container footer-bottom-container">
+          <div class="footer-logo-small">GREENINJA</div>
+          <div class="social-icons">
+            <div class="icon-box">
+              <img src="images/icons8-facebook-90.png" alt="Facebook" />
+            </div>
+            <div class="icon-box">
+              <img src="images/icons8-linkedin-90.png" alt="LinkedIn" />
+            </div>
+            <div class="icon-box">
+              <img src="images/icons8-youtube-90.png" alt="YouTube" />
+            </div>
+            <div class="icon-box">
+              <img src="images/icons8-instagram-90.png" alt="Instagram" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Scroll reveal
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("vis");
+              obs.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.08 },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
+
+      // Tab highlight on scroll
+      const tabAbout = document.getElementById("tab-about");
+      const tabContact = document.getElementById("tab-contact");
+      const contactSec = document.getElementById("contact");
+      window.addEventListener("scroll", () => {
+        const inContact = window.scrollY + 160 >= contactSec.offsetTop;
+        tabAbout.classList.toggle("active", !inContact);
+        tabContact.classList.toggle("active", inContact);
+      });
+    </script>
+  </body>
+</html>
