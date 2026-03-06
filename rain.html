@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GREENNINJA — Rain Harvesting Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300;400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #f5f2e8;
+      --dark:    #edeade;
+      --panel:   #e4e0d0;
+      --panel2:  #dedad0;
+      --border:  #c8c4b0;
+      --border2: #b8b4a0;
+      --mid:     #8a9080;
+      --dim:     #6a7060;
+      --muted:   #4a5440;
+      --light:   #2a3428;
+      --white:   #1a2018;
+      --accent:  #4a8a2a;
+      --accent2: #3a7020;
+      --blue:    #2a6020;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── RAIN ── */
+    #rain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    #header-section {
+      background-color: #3d7a5a;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      position: sticky; top: 0; z-index: 200;
+      box-shadow: 0 2px 16px rgba(20,60,35,0.15);
+    }
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 80px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .logo-text {
+      font-family: 'Greenth', sans-serif;
+      font-weight: 700;
+      font-size: 32px;
+      color: #000000;
+    }
+    .navigation {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+    nav .nav-links {
+      display: flex;
+      gap: 48px;
+    }
+    .nav-item,
+    .dropdown-label {
+      text-decoration: none;
+      color: #000000;
+      font-size: 18px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: 'Barlow', sans-serif;
+    }
+    .nav-item:hover,
+    .dropdown-label:hover {
+      color: #1f4d2a;
+    }
+    .nav-button-wrapper {
+      display: flex;
+      align-items: center;
+    }
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .chevron { transition: transform 0.2s; flex-shrink: 0; }
+    .dropdown:hover .chevron { transform: rotate(180deg); }
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 12px;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+      padding: 12px 0;
+      min-width: 220px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 180ms ease, transform 180ms ease, visibility 180ms;
+      z-index: 20;
+      list-style: none;
+    }
+    .dropdown:hover .dropdown-menu,
+    .dropdown:focus-within .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .dropdown-menu li { list-style: none; }
+    .dropdown-menu a {
+      display: block;
+      padding: 10px 18px;
+      color: #0e2d1c;
+      text-decoration: none;
+      font-weight: 600;
+      font-family: 'Barlow', sans-serif;
+      font-size: 15px;
+    }
+    .dropdown-menu a:hover {
+      background: rgba(29, 98, 60, 0.08);
+    }
+    .contact-btn {
+      background-color: #000000;
+      color: #3d7a5a;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      font-family: 'Barlow', sans-serif;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .contact-btn:hover {
+      background: #1a1a1a;
+      transform: translateY(-1px);
+    }
+
+    /* ── SUB-BAR ── */
+    .subbar {
+      position: relative; z-index: 1;
+      background: var(--dark);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 0 48px; height: 40px;
+    }
+    .subbar-left {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem; font-weight: 400;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--dim);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .subbar-left::before {
+      content: ''; width: 16px; height: 1px; background: var(--border2);
+    }
+    .subbar-right {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--dim);
+      cursor: pointer; transition: color 0.2s;
+    }
+    .subbar-right:hover { color: var(--white); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; z-index: 1;
+      padding: 64px 48px 56px;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 40px;
+    }
+    .hero-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem; font-weight: 400;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--dim); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero-label::before {
+      content: ''; width: 20px; height: 1px; background: var(--accent);
+    }
+    .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3rem, 7.5vw, 6.5rem);
+      line-height: 0.92; text-transform: uppercase;
+      letter-spacing: -0.01em; color: var(--white);
+    }
+    .hero h1 .thin { font-weight: 200; color: var(--muted); }
+    .hero-sub {
+      margin-top: 22px; max-width: 420px;
+      font-size: 0.82rem; font-weight: 300;
+      color: var(--dim); line-height: 1.75;
+      letter-spacing: 0.03em;
+    }
+    .hero-meta {
+      text-align: right;
+      font-family: 'Barlow Condensed', sans-serif;
+    }
+    .hero-meta .idx {
+      font-size: 0.65rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--dim);
+      margin-bottom: 10px;
+    }
+    .hero-meta .formula-box {
+      border: 1px solid var(--border);
+      padding: 16px 20px; background: var(--panel);
+      min-width: 200px;
+    }
+    .hero-meta .f-label {
+      font-size: 0.58rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--dim);
+      margin-bottom: 8px;
+    }
+    .hero-meta .f-eq {
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.06em; color: var(--accent);
+    }
+
+    /* ── WEATHER BAR ── */
+    .weather-bar {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; gap: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .weather-btn {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: #f5f2e8; background: var(--accent);
+      border: none; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .weather-btn:hover { background: var(--accent2); }
+    .weather-btn svg { width: 14px; height: 14px; }
+    .weather-info {
+      padding: 0 28px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--dim);
+    }
+
+    /* ── BODY GRID ── */
+    .body-grid {
+      position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* ── LEFT: CALCULATOR ── */
+    .calc-panel {
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .section-head {
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      justify-content: space-between;
+    }
+    .section-head .s-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.62rem; font-weight: 400;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--dim);
+    }
+    .section-head .s-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.62rem; color: var(--mid);
+      letter-spacing: 0.1em;
+    }
+
+    .form-body { padding: 36px 40px; }
+
+    .field { margin-bottom: 26px; }
+    .field:last-of-type { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.62rem; font-weight: 400;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 9px;
+    }
+
+    .input-row { position: relative; display: flex; align-items: center; }
+
+    input[type="number"], input[type="text"], select {
+      width: 100%;
+      padding: 13px 58px 13px 16px;
+      background: var(--dark);
+      border: 1px solid var(--border); border-radius: 0;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.05rem; font-weight: 400;
+      letter-spacing: 0.05em; color: var(--white);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    input:focus, select:focus {
+      border-color: var(--accent);
+      background: var(--panel);
+    }
+    input::placeholder { color: var(--mid); }
+    select { cursor: pointer; padding-right: 16px; }
+    select option { background: var(--dark); }
+    .unit {
+      position: absolute; right: 13px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent); pointer-events: none;
+    }
+
+    /* unit toggle */
+    .unit-toggle {
+      display: flex; margin-bottom: 9px;
+      gap: 0;
+    }
+    .utog {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 5px 14px;
+      background: var(--dark); border: 1px solid var(--border);
+      color: var(--dim); cursor: pointer;
+      transition: all 0.15s;
+    }
+    .utog.active { background: var(--accent); color: #f5f2e8; border-color: var(--accent); }
+    .utog + .utog { border-left: none; }
+
+    /* ── CALCULATE BTN ── */
+    .btn-row { margin-top: 32px; display: flex; gap: 0; }
+    .btn-calc {
+      flex: 1;
+      padding: 16px 24px;
+      background: var(--accent); color: #f5f2e8;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      border: none; border-radius: 0; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-calc:hover { background: var(--accent2); }
+    .btn-calc:active { transform: scale(0.99); }
+    .btn-calc svg { width: 15px; height: 15px; }
+    .btn-reset {
+      padding: 16px 20px;
+      background: transparent; color: var(--dim);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem; font-weight: 400;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      border: 1px solid var(--border); border-left: none;
+      border-radius: 0; cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-reset:hover { color: var(--white); border-color: var(--mid); }
+
+    /* ── RIGHT: GUIDE + RESULTS ── */
+    .right-panel { display: flex; flex-direction: column; }
+
+    /* roof guide */
+    .roof-guide {
+      padding: 36px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    .roof-guide h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--white); margin-bottom: 12px;
+    }
+    .roof-guide p {
+      font-size: 0.8rem; font-weight: 300;
+      color: var(--muted); line-height: 1.72;
+      letter-spacing: 0.02em; margin-bottom: 22px;
+    }
+    .roof-diagram {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .roof-tile {
+      background: var(--panel);
+      padding: 16px 12px; text-align: center;
+    }
+    .roof-tile svg { width: 52px; height: 38px; display: block; margin: 0 auto 8px; }
+    .roof-tile .rt-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--dim);
+    }
+    .roof-tile .rt-coeff {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem; font-weight: 600;
+      color: var(--accent); margin-top: 3px;
+    }
+
+    /* results */
+    .results-panel {
+      padding: 36px 40px;
+      flex: 1;
+      border-bottom: 1px solid var(--border);
+    }
+    .results-panel h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.62rem; font-weight: 400;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--dim); margin-bottom: 28px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .results-panel h3::before {
+      content: ''; width: 14px; height: 1px; background: var(--border2);
+    }
+
+    /* placeholder */
+    .rp-placeholder {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+      padding: 10px 0;
+    }
+    .rp-placeholder svg { width: 40px; height: 40px; opacity: 0.18; }
+    .rp-placeholder p {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--dim); line-height: 1.9;
+    }
+
+    .results-hidden { display: none; }
+
+    /* result sentence */
+    .result-sentence {
+      font-size: 0.82rem; font-weight: 300;
+      color: var(--muted); line-height: 1.75;
+      letter-spacing: 0.02em;
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .result-sentence strong { color: var(--white); font-weight: 500; }
+
+    /* stat rows */
+    .stat-rows { margin-bottom: 24px; }
+    .stat-row {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      align-items: center; gap: 14px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      animation: slideIn 0.4s ease both;
+    }
+    .stat-row:last-child { border-bottom: none; }
+    .sr-icon {
+      width: 36px; height: 36px; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sr-icon svg { width: 15px; height: 15px; }
+    .sr-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.6rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--dim);
+    }
+    .sr-val {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.75rem; font-weight: 700;
+      color: var(--white); line-height: 1; text-align: right;
+    }
+    .sr-unit {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem; font-weight: 300;
+      color: var(--muted); letter-spacing: 0.1em;
+      display: block; text-align: right; margin-top: 2px;
+    }
+
+    /* progress */
+    .prog-block { margin-bottom: 22px; }
+    .prog-head {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 8px;
+    }
+    .prog-lbl {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.6rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--dim);
+    }
+    .prog-pct {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--accent); letter-spacing: -0.02em;
+    }
+    .prog-track {
+      height: 2px; background: var(--border); overflow: hidden;
+    }
+    .prog-fill {
+      height: 100%; background: var(--accent);
+      width: 0%; transition: width 1.2s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* insight */
+    .insight {
+      border-left: 2px solid var(--accent);
+      padding: 12px 16px;
+      font-size: 0.8rem; font-weight: 300;
+      color: var(--muted); line-height: 1.7;
+    }
+    .insight strong { color: var(--accent); font-weight: 500; }
+
+    /* ── HOW IT WORKS ── */
+    .how {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: repeat(4,1fr);
+      border-bottom: 1px solid var(--border);
+    }
+    .how-step {
+      padding: 36px 32px;
+      border-right: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    .how-step:last-child { border-right: none; }
+    .how-step:hover { background: var(--dark); }
+    .h-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.6rem; letter-spacing: 0.18em;
+      color: var(--dim); margin-bottom: 18px;
+    }
+    .h-icon {
+      width: 30px; height: 30px; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .h-icon svg { width: 14px; height: 14px; }
+    .how-step h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--light); margin-bottom: 7px;
+    }
+    .how-step p {
+      font-size: 0.76rem; font-weight: 300;
+      color: var(--dim); line-height: 1.65;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+    }
+    .foot-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 0.82rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--mid);
+    }
+    .foot-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.6rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--dim);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(8px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav, .subbar, .hero, footer { padding-left: 24px; padding-right: 24px; }
+      .hero { grid-template-columns: 1fr; gap: 24px; }
+      .hero-meta { text-align: left; }
+      .body-grid { grid-template-columns: 1fr; }
+      .calc-panel { border-right: none; }
+      .form-body, .roof-guide, .results-panel { padding: 28px 24px; }
+      .how { grid-template-columns: 1fr 1fr; }
+      .section-head { padding: 16px 24px; }
+      .weather-bar { padding: 0 24px; }
+      .weather-info { padding: 0 16px; }
+    }
+    @media (max-width: 560px) {
+      .how { grid-template-columns: 1fr; }
+      .roof-diagram { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="rain"></canvas>
+
+<!-- ── NAV ── -->
+<section id="header-section">
+  <div class="container header-container">
+    <div class="logo">
+      <div class="logo-text">GREENINJA</div>
+    </div>
+    <nav class="navigation">
+      <div class="nav-links">
+        <a href="index.html" class="nav-item">Home</a>
+        <div class="nav-item dropdown">
+          <span class="dropdown-label">Features
+            <svg class="chevron" viewBox="0 0 12 8" fill="none" width="11" height="11">
+              <path d="M1 1l5 5 5-5" stroke="#000000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <ul class="dropdown-menu">
+            <li><a href="plants.html">Native Plant Nursery</a></li>
+            <li><a href="rain.html">Gardening Consultation</a></li>
+            <li><a href="waste.html">Eco-Friendly Landscaping</a></li>
+          </ul>
+        </div>
+        <a href="#gallery-cta" class="nav-item">Content</a>
+      </div>
+      <div class="nav-button-wrapper">
+        <button class="contact-btn">Contact Us</button>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<!-- ── SUBBAR ── -->
+<div class="subbar">
+  <span class="subbar-left">Code Ninja</span>
+  <span class="subbar-right">← Back</span>
+</div>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div>
+    <div class="hero-label">Tool — 01 — Water Conservation</div>
+    <h1>Rain<br><span class="thin">Harvesting</span><br>Calc.</h1>
+    <p class="hero-sub">Calculate your roof's rainwater collection potential. Enter your parameters and discover daily, monthly, and annual yields.</p>
+  </div>
+  <div class="hero-meta">
+    <div class="idx">Formula Reference</div>
+    <div class="formula-box">
+      <div class="f-label">Calculation Basis</div>
+      <div class="f-eq">Area × Rainfall × Runoff</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WEATHER BAR ── -->
+<div class="weather-bar">
+  <button class="weather-btn" onclick="checkWeather()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 17.58A5 5 0 0018 8h-1.26A8 8 0 104 15.25"/><line x1="8" y1="19" x2="8" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="16" y1="19" x2="16" y2="21"/></svg>
+    Check Weather
+  </button>
+  <span class="weather-info" id="weatherInfo">Enter your location to auto-fill local rainfall data</span>
+</div>
+
+<!-- ── BODY ── -->
+<div class="body-grid">
+
+  <!-- LEFT: INPUTS -->
+  <div class="calc-panel">
+    <div class="section-head">
+      <span class="s-label">Input Parameters</span>
+      <span class="s-num">.01</span>
+    </div>
+    <div class="form-body">
+
+      <div class="field">
+        <label>Province / Region</label>
+        <div class="input-row">
+          <input type="text" id="province" placeholder="e.g. British Columbia, Ontario…"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Select Type of Roof</label>
+        <div class="input-row">
+          <select id="roofType" onchange="updateCoeff()">
+            <option value="0.90">Metal / Tin Roof — 0.90</option>
+            <option value="0.90">Galvanized Iron Roof — 0.90</option>
+            <option value="0.825" selected>Concrete Roof — 0.80–0.85</option>
+            <option value="0.775">Clay Tile Roof — 0.75–0.80</option>
+            <option value="0.775">Asphalt Shingle Roof — 0.75–0.80</option>
+            <option value="0.80">Slate Roof — 0.80</option>
+            <option value="0.875">Corrugated Plastic Roof — 0.85–0.90</option>
+            <option value="0.65">Flat Gravel Roof — 0.60–0.70</option>
+            <option value="0.40">Green Roof (vegetation) — 0.30–0.50</option>
+          </select>
+        </div>
+        <div style="margin-top:7px;display:flex;align-items:center;gap:8px;">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);">Runoff Coefficient:</span>
+          <span id="coeffDisplay" style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:700;color:var(--accent);">0.825</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Roof Area</label>
+        <div class="unit-toggle">
+          <button class="utog active" onclick="setAreaUnit('ft2',this)">ft²</button>
+          <button class="utog" onclick="setAreaUnit('m2',this)">m²</button>
+        </div>
+        <div class="input-row">
+          <input type="number" id="roofArea" placeholder="e.g. 1200" min="1"/>
+          <span class="unit" id="areaUnit">ft²</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Local Average Rainfall</label>
+        <div class="unit-toggle">
+          <button class="utog active" onclick="setRainUnit('in',this)">in / yr</button>
+          <button class="utog" onclick="setRainUnit('mm',this)">mm / yr</button>
+        </div>
+        <div class="input-row">
+          <input type="number" id="rainfall" placeholder="e.g. 38" min="1"/>
+          <span class="unit" id="rainUnit">in/yr</span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-calc" onclick="calculate()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L6 10a6 6 0 1012 0L12 2z"/></svg>
+          Calculate
+          <span style="margin-left:auto;font-weight:300;font-size:1rem;">→</span>
+        </button>
+        <button class="btn-reset" onclick="resetForm()">Reset</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right-panel">
+
+    <!-- Roof Area Guide -->
+    <div class="roof-guide">
+      <div class="section-head" style="padding:0 0 16px;border:none;margin-bottom:0;">
+        <span class="s-label">Don't know your roof area? Here's how to calculate it</span>
+        <span class="s-num">.02</span>
+      </div>
+      <p>Multiply your roof's length × width (in feet or metres). The result is the collection area — rain falls straight down, so slope doesn't matter. Use your building's footprint.</p>
+      <!-- SVG Roof Diagrams -->
+      <div class="roof-diagram">
+        <!-- Gable -->
+        <div class="roof-tile">
+          <svg viewBox="0 0 52 38" fill="none">
+            <rect x="4" y="18" width="44" height="16" fill="#e4e0d0" stroke="#c8c4b0" stroke-width="1"/>
+            <polygon points="4,18 26,4 48,18" fill="#1a2e1a" stroke="#4a8a2a" stroke-width="1"/>
+            <rect x="8" y="26" width="8" height="8" fill="#e4e0d0" stroke="#c8c4b0" stroke-width="0.8"/>
+            <rect x="22" y="24" width="8" height="10" fill="#e4e0d0" stroke="#c8c4b0" stroke-width="0.8"/>
+            <text x="26" y="37" text-anchor="middle" font-family="Barlow Condensed" font-size="5" fill="#6a7060" letter-spacing="1">FOOTPRINT</text>
+          </svg>
+          <div class="rt-label">Gable Roof</div>
+          <div class="rt-coeff">L × W</div>
+        </div>
+        <!-- Hip -->
+        <div class="roof-tile">
+          <svg viewBox="0 0 52 38" fill="none">
+            <rect x="4" y="22" width="44" height="12" fill="#e4e0d0" stroke="#c8c4b0" stroke-width="1"/>
+            <polygon points="4,22 12,10 40,10 48,22" fill="#1a2e1a" stroke="#4a8a2a" stroke-width="1"/>
+            <line x1="12" y1="10" x2="26" y2="4" stroke="#4a8a2a" stroke-width="0.8"/>
+            <line x1="40" y1="10" x2="26" y2="4" stroke="#4a8a2a" stroke-width="0.8"/>
+            <text x="26" y="37" text-anchor="middle" font-family="Barlow Condensed" font-size="5" fill="#6a7060" letter-spacing="1">FOOTPRINT</text>
+          </svg>
+          <div class="rt-label">Hip Roof</div>
+          <div class="rt-coeff">L × W</div>
+        </div>
+        <!-- Flat -->
+        <div class="roof-tile">
+          <svg viewBox="0 0 52 38" fill="none">
+            <rect x="4" y="12" width="44" height="22" fill="#e4e0d0" stroke="#c8c4b0" stroke-width="1"/>
+            <rect x="4" y="10" width="44" height="4" fill="#1a2e1a" stroke="#4a8a2a" stroke-width="1"/>
+            <text x="26" y="37" text-anchor="middle" font-family="Barlow Condensed" font-size="5" fill="#6a7060" letter-spacing="1">FOOTPRINT</text>
+          </svg>
+          <div class="rt-label">Flat Roof</div>
+          <div class="rt-coeff">L × W</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results-panel">
+      <h3>Output — Results</h3>
+
+      <div class="rp-placeholder" id="placeholder">
+        <svg viewBox="0 0 40 40" fill="none">
+          <path d="M30 17a8 8 0 10-14.9-3A6 6 0 109 25h21a6 6 0 000-8z" stroke="#4a8a2a" stroke-width="1.4"/>
+          <line x1="13" y1="30" x2="12" y2="35" stroke="#4a8a2a" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="20" y1="30" x2="19" y2="35" stroke="#4a8a2a" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="27" y1="30" x2="26" y2="35" stroke="#4a8a2a" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <p>Enter parameters<br>and press calculate.</p>
+      </div>
+
+      <div id="resultsContent" class="results-hidden">
+
+        <div class="result-sentence" id="resultSentence"></div>
+
+        <div class="stat-rows">
+          <div class="stat-row" style="animation-delay:0s">
+            <div class="sr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#4a8a2a" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+            </div>
+            <div>
+              <div class="sr-label">Per Day</div>
+            </div>
+            <div>
+              <div class="sr-val" id="valDay">–</div>
+              <div class="sr-unit" id="unitDay">gallons</div>
+            </div>
+          </div>
+
+          <div class="stat-row" style="animation-delay:0.08s">
+            <div class="sr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#4a8a2a" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="0"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div>
+              <div class="sr-label">Per Month</div>
+            </div>
+            <div>
+              <div class="sr-val" id="valMonth">–</div>
+              <div class="sr-unit" id="unitMonth">gallons</div>
+            </div>
+          </div>
+
+          <div class="stat-row" style="animation-delay:0.16s">
+            <div class="sr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#4a8a2a" stroke-width="1.8" stroke-linecap="round"><path d="M12 2L6 10a6 6 0 1012 0L12 2z"/></svg>
+            </div>
+            <div>
+              <div class="sr-label">Per Year</div>
+            </div>
+            <div>
+              <div class="sr-val" id="valYear">–</div>
+              <div class="sr-unit" id="unitYear">gallons</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="prog-block">
+          <div class="prog-head">
+            <span class="prog-lbl">Est. Demand Coverage</span>
+            <span class="prog-pct" id="coveragePct">0%</span>
+          </div>
+          <div class="prog-track">
+            <div class="prog-fill" id="coverageBar"></div>
+          </div>
+        </div>
+
+        <div class="insight" id="insightText"></div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── infos ── -->
+<div class="how">
+  <div class="how-step">
+    <div class="h-num">.01</div>
+    <div class="h-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#4a8a2a" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="7" width="20" height="10" rx="0"/><line x1="6" y1="7" x2="6" y2="13"/><line x1="10" y1="7" x2="10" y2="11"/><line x1="14" y1="7" x2="14" y2="13"/><line x1="18" y1="7" x2="18" y2="11"/></svg>
+    </div>
+    <h4>Measure Roof</h4>
+    <p>Multiply length × width using your building footprint. Slope doesn't change collection area.</p>
+  </div>
+  <div class="how-step">
+    <div class="h-num">.02</div>
+    <div class="h-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#4a8a2a" stroke-width="1.6" stroke-linecap="round"><path d="M20 17.58A5 5 0 0018 8h-1.26A8 8 0 104 15.25"/><line x1="8" y1="19" x2="8" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="16" y1="19" x2="16" y2="21"/></svg>
+    </div>
+    <h4>Local Rainfall</h4>
+    <p>Find your region's annual precipitation data from a local weather service or government source.</p>
+  </div>
+  <div class="how-step">
+    <div class="h-num">.03</div>
+    <div class="h-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#4a8a2a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+    </div>
+    <h4>Roof Material</h4>
+    <p>Each surface has a runoff coefficient (0.3–0.9) that determines how efficiently rain is collected.</p>
+  </div>
+  <div class="how-step">
+    <div class="h-num">.04</div>
+    <div class="h-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#4a8a2a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    </div>
+    <h4>See Results</h4>
+    <p>Get daily, monthly and yearly yield in gallons or litres to plan your harvesting system.</p>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <span class="foot-logo">GreenNinja</span>
+  <span class="foot-tag">Reduce Waste — Save Water — Grow Smart</span>
+</footer>
+
+<script>
+/* ── RAIN ANIMATION ── */
+const cv = document.getElementById('rain');
+const cx = cv.getContext('2d');
+let drops = [];
+
+function resize() {
+  cv.width  = window.innerWidth;
+  cv.height = window.innerHeight;
+  drops = [];
+  const n = Math.floor(cv.width / 9);
+  for (let i = 0; i < n; i++) {
+    drops.push({
+      x: Math.random() * cv.width,
+      y: Math.random() * cv.height,
+      l: Math.random() * 22 + 8,
+      s: Math.random() * 3 + 1.5,
+      o: Math.random() * 0.18 + 0.05,
+      w: Math.random() * 0.7 + 0.2
+    });
+  }
+}
+function animRain() {
+  cx.clearRect(0, 0, cv.width, cv.height);
+  drops.forEach(d => {
+    cx.beginPath();
+    cx.moveTo(d.x, d.y);
+    cx.lineTo(d.x - d.l * 0.13, d.y + d.l);
+    cx.strokeStyle = `rgba(80,140,60,${d.o})`;
+    cx.lineWidth   = d.w;
+    cx.stroke();
+    d.y += d.s; d.x -= d.s * 0.08;
+    if (d.y > cv.height) { d.y = -d.l; d.x = Math.random() * cv.width; }
+  });
+  requestAnimationFrame(animRain);
+}
+window.addEventListener('resize', resize);
+resize(); animRain();
+let areaUnit = 'ft2';
+let rainUnit = 'in';
+
+function setAreaUnit(u, btn) {
+  areaUnit = u;
+  document.querySelectorAll('.utog').forEach((b,i) => { if(i < 2) b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('areaUnit').textContent = u === 'ft2' ? 'ft²' : 'm²';
+  document.getElementById('roofArea').placeholder = u === 'ft2' ? 'e.g. 1200' : 'e.g. 120';
+}
+function setRainUnit(u, btn) {
+  rainUnit = u;
+  const btns = document.querySelectorAll('.utog');
+  btns[2].classList.remove('active'); btns[3].classList.remove('active');
+  btn.classList.add('active');
+  document.getElementById('rainUnit').textContent = u === 'in' ? 'in/yr' : 'mm/yr';
+  document.getElementById('rainfall').placeholder = u === 'in' ? 'e.g. 38' : 'e.g. 965';
+}
+
+function updateCoeff() {
+  const v = parseFloat(document.getElementById('roofType').value);
+  document.getElementById('coeffDisplay').textContent = v.toFixed(3);
+}
+
+/* ── FORMAT ── */
+function fmtG(n) {
+  if (n >= 1e6)  return (n/1e6).toFixed(2) + 'M';
+  if (n >= 10000) return (n/1000).toFixed(1) + 'k';
+  return Math.round(n).toLocaleString();
+}
+
+/* ── CALCULATE ── */
+function calculate() {
+  const rawArea   = parseFloat(document.getElementById('roofArea').value);
+  const rawRain   = parseFloat(document.getElementById('rainfall').value);
+  const coeff     = parseFloat(document.getElementById('roofType').value);
+  const roofLabel = document.getElementById('roofType').selectedOptions[0].text.split('—')[0].trim();
+  const province  = document.getElementById('province').value.trim() || 'your region';
+
+  if (!rawArea || !rawRain) {
+    alert('Please enter both roof area and rainfall values.');
+    return;
+  }
+
+  // Convert to m² and mm
+  const areaM2  = areaUnit === 'ft2' ? rawArea * 0.0929 : rawArea;
+  const rainMM  = rainUnit === 'in'  ? rawRain * 25.4  : rawRain;
+
+  // Litres / year: area(m²) × rainfall(m) × coeff × 1000
+  const litresYear  = areaM2 * (rainMM / 1000) * coeff * 1000;
+  const litresMonth = litresYear / 12;
+  const litresDay   = litresYear / 365;
+
+  // Gallons
+  const galYear  = litresYear  * 0.264172;
+  const galMonth = litresMonth * 0.264172;
+  const galDay   = litresDay   * 0.264172;
+
+  // coverage (people × 80 gal/day non-potable 40%)
+  const people = 2.5; // average household
+  const demandGalYear = people * 80 * 0.4 * 365;
+  const coverage = Math.min(100, galYear / demandGalYear * 100);
+  const pct = coverage.toFixed(0) + '%';
+
+  // populate
+  document.getElementById('valDay').textContent   = fmtG(galDay);
+  document.getElementById('valMonth').textContent = fmtG(galMonth);
+  document.getElementById('valYear').textContent  = fmtG(galYear);
+  ['unitDay','unitMonth','unitYear'].forEach(id => {
+    document.getElementById(id).textContent = 'gallons of rainwater';
+  });
+
+  document.getElementById('resultSentence').innerHTML =
+    `With <strong>${roofLabel}</strong>, a roof area of <strong>${rawArea.toLocaleString()} ${areaUnit === 'ft2' ? 'ft²' : 'm²'}</strong> and a local average rainfall of <strong>${rawRain} ${rainUnit === 'in' ? 'in/yr' : 'mm/yr'}</strong> in <strong>${province}</strong>, you are able to collect:`;
+
+  document.getElementById('coveragePct').textContent = pct;
+  setTimeout(() => document.getElementById('coverageBar').style.width = pct, 60);
+
+  const tanks = Math.ceil(galYear / 1320); // ~5000L tank
+  let msg = '';
+  if (coverage >= 100)
+    msg = `<strong>Full coverage achieved.</strong> Your system exceeds estimated non-potable demand — ${fmtG(galYear)} gal/year collected. Scale your storage to capture surplus.`;
+  else if (coverage >= 50)
+    msg = `<strong>Strong potential.</strong> ${pct} of non-potable demand offset. That's ${fmtG(galMonth)} gallons every month for garden, toilet, and laundry use.`;
+  else if (coverage >= 20)
+    msg = `<strong>Solid foundation.</strong> ${pct} coverage is a meaningful saving. Add greywater recycling or expand your roof catchment for greater impact.`;
+  else
+    msg = `<strong>Every drop counts.</strong> ${pct} of demand offset. Consider verifying local rainfall data or expanding the catchment area.`;
+  if (tanks > 0)
+    msg += ` Approx. <strong>${tanks} standard tank${tanks > 1 ? 's' : ''}</strong> (5,000 L) needed to store the full annual yield.`;
+
+  document.getElementById('insightText').innerHTML = msg;
+  document.getElementById('placeholder').style.display = 'none';
+  const rc = document.getElementById('resultsContent');
+  rc.classList.remove('results-hidden');
+  rc.style.display = 'block';
+}
+
+function resetForm() {
+  document.getElementById('roofArea').value = '';
+  document.getElementById('rainfall').value = '';
+  document.getElementById('province').value = '';
+  document.getElementById('roofType').selectedIndex = 2;
+  updateCoeff();
+  document.getElementById('placeholder').style.display = 'flex';
+  document.getElementById('resultsContent').style.display = 'none';
+  document.getElementById('resultsContent').classList.add('results-hidden');
+  document.getElementById('coverageBar').style.width = '0%';
+}
+
+function checkWeather() {
+  document.getElementById('weatherInfo').textContent = 'Weather integration — connect a weather API to auto-fill rainfall data for your region.';
+}
+
+/* init */
+window.addEventListener('DOMContentLoaded', updateCoeff);
+</script>
+</body>
+</html>
