@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GreeNinja</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="global.css" />
+    <style id="sections-styles">
+      #header-section {
+        background-color: #3d7a5a;
+        height: 120px;
+        display: flex;
+        align-items: center;
+      }
+
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 80px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .logo-text {
+        font-family: Greenth;
+        font-weight: 700;
+        font-size: 32px;
+        color: #000000;
+      }
+
+      .navigation {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 48px;
+      }
+
+      .nav-item,
+      .dropdown-label {
+        text-decoration: none;
+        color: #000000;
+        font-size: 18px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      .nav-item:hover,
+      .dropdown-label:hover {
+        color: #1f4d2a;
+      }
+
+      .nav-button-wrapper {
+        display: flex;
+        align-items: center;
+      }
+
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 12px;
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+        padding: 12px 0;
+        min-width: 220px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition:
+          opacity 180ms ease,
+          transform 180ms ease,
+          visibility 180ms;
+        z-index: 20;
+      }
+
+      .dropdown:hover .dropdown-menu,
+      .dropdown:focus-within .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-menu li {
+        list-style: none;
+      }
+
+      .dropdown-menu a {
+        display: block;
+        padding: 10px 18px;
+        color: #0e2d1c;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .dropdown-menu a:hover {
+        background: rgba(29, 98, 60, 0.08);
+      }
+
+      .contact-btn {
+        background-color: #000000;
+        color: #3d7a5a;
+        padding: 14px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 16px;
+      }
+
+      @media (max-width: 768px) {
+        .header-container {
+          padding: 0 20px;
+        }
+        .navigation {
+          display: none;
+        }
+      }
+
+      #hero-section {
+        background-color: #c9d6c6;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-container {
+        position: relative;
+        min-height: 100vh; /* From design */
+        width: 100%;
+      }
+
+      .hero-image-wrapper {
+        position: absolute;
+        left: -100px;
+        width: 1600px;
+        height: 636px;
+        z-index: 1;
+      }
+
+      .hero-bg {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .hero-content {
+        position: absolute;
+        top: 50px; /* Relative to container */
+        left: 288px;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        max-width: 844px;
+      }
+
+      .hero-text-group {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .hero-title {
+        font-size: 64px;
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 1.1;
+      }
+
+      .hero-subtitle {
+        font-size: 24px;
+        color: rgba(255, 255, 255, 0.75);
+        font-weight: 500;
+      }
+
+      .hero-cta {
+        background-color: #467243;
+        width: 146px;
+        height: 76px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .cta-text {
+        color: #ffffff;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      @media (max-width: 1024px) {
+        .hero-content {
+          left: 50px;
+          right: 50px;
+        }
+        .hero-title {
+          font-size: 48px;
+        }
+      }
+
+      /* CSS for section section:Features */
+      #features-section {
+        background-color: #f1efe4;
+        padding: 120px 0 80px;
+        margin-top: -300px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .features-header {
+        text-align: center;
+        margin-bottom: 56px;
+      }
+
+      .features-title {
+        font-size: 44px;
+        font-weight: 700;
+        color: #0e2d1c;
+        margin: 0;
+      }
+
+      .features-subtitle {
+        margin-top: 16px;
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.65);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .features-container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 32px;
+        padding: 0 67px;
+        box-sizing: border-box;
+        flex-wrap: wrap;
+      }
+
+      .feature-card:nth-child(2) {
+        --card-translate: 10px;
+      }
+
+      .feature-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .feature-card {
+        position: relative;
+        width: 360px;
+        aspect-ratio: 1 / 1;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        transform: translateY(var(--card-translate, 0));
+      }
+
+      .feature-card:hover {
+        transform: translateY(var(--card-translate, 0)) scale(1.04);
+        box-shadow: 0 28px 60px rgba(0, 0, 0, 0.35);
+      }
+
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.12) 0%,
+          rgba(0, 0, 0, 0.55) 60%,
+          rgba(0, 0, 0, 0.75) 100%
+        );
+        z-index: 1;
+      }
+
+      .card-image-wrapper {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+      }
+
+      .card-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .card-action {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        border: none;
+        cursor: pointer;
+        z-index: 2;
+      }
+
+      .card-action::after {
+        content: "+";
+        font-size: 24px;
+        font-weight: 700;
+        color: #27432c;
+      }
+
+      .card-content {
+        position: absolute;
+        left: 24px;
+        right: 24px;
+        bottom: 24px;
+        z-index: 2;
+        text-align: left;
+      }
+
+      .card-title {
+        color: #ffffff;
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .card-desc {
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 14px;
+        line-height: 1.5;
+        margin-top: 10px;
+        opacity: 0;
+        transform: translateY(10px);
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease;
+        max-height: 0;
+        overflow: hidden;
+      }
+
+      .feature-card:hover .card-desc {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 120px;
+      }
+
+      @media (max-width: 1200px) {
+        .features-container {
+          gap: 20px;
+        }
+        .feature-card {
+          width: 100%;
+          max-width: 400px;
+        }
+      }
+
+      /* CSS for section section:Parallax */
+      #parallax-section {
+        background-color: #d9d9d9;
+        height: 628px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .parallax-text {
+        font-size: 96px;
+        font-weight: 700;
+        color: #000000;
+        opacity: 0.2; /* Visual estimation */
+      }
+
+      /* CSS for section section:HowItWorks */
+      #how-it-works {
+        background-color: #f8f3e1;
+        padding: 80px 0;
+      }
+
+      .how-container {
+        display: flex;
+        flex-direction: column;
+        gap: 60px;
+      }
+
+      .how-top-content {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 177px; /* Matches design x position */
+      }
+
+      .how-intro {
+        max-width: 462px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .how-intro h2 {
+        font-size: 40px;
+        color: #043915;
+        font-weight: 700;
+      }
+
+      .how-intro p {
+        font-size: 18px;
+        color: #043915;
+        line-height: 1.6;
+      }
+
+      .how-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 48px;
+        max-width: 516px;
+      }
+
+      .step-item {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .step-item h3 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #000000;
+      }
+
+      .step-item p {
+        font-size: 18px;
+        color: #000000;
+        line-height: 1.5;
+      }
+
+      .how-image img {
+        width: 1060px;
+        height: 487px;
+        object-fit: cover;
+        margin: 0 auto;
+      }
+
+      .how-stats {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 177px;
+        align-items: flex-start;
+      }
+
+      .stat-item {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-width: 300px;
+      }
+
+      .stat-number {
+        font-size: 48px;
+        font-weight: 700;
+        color: #000000;
+      }
+
+      .stat-label {
+        font-size: 20px;
+        color: #000000;
+        font-weight: 500;
+      }
+
+      .center-stat {
+        padding-top: 10px;
+      }
+
+      @media (max-width: 1200px) {
+        .how-top-content,
+        .how-stats {
+          padding: 0 40px;
+        }
+        .how-top-content {
+          flex-direction: column;
+          gap: 40px;
+        }
+      }
+
+      #gallery-cta {
+        background-color: #043915;
+        height: 890px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .gallery-container {
+        height: 100%;
+      }
+
+      .gallery-img {
+        position: absolute;
+        border-radius: 10px;
+      }
+
+      .img-1 {
+        /* 91:39 */
+        left: -51px;
+        top: 12px;
+        width: 396px;
+        height: 264px;
+      }
+
+      .img-2 {
+        /* 89:37 */
+        left: -64px;
+        top: 304px;
+        width: 256px;
+        height: 320px;
+      }
+
+      .img-3 {
+        /* 89:38 */
+        left: 80px;
+        top: 641px;
+        width: 374px;
+        height: 249px;
+      }
+
+      .img-4 {
+        /* 91:40 */
+        left: 1052px;
+        top: 12px;
+        width: 390px;
+        height: 260px;
+      }
+
+      .img-5 {
+        /* 91:41 */
+        left: 1142px;
+        top: 326px;
+        width: 351px;
+        height: 259px;
+      }
+
+      .img-6 {
+        /* 91:42 */
+        left: 1019px;
+        top: 652px;
+        width: 423px;
+        height: 238px;
+      }
+
+      .cta-content {
+        position: absolute;
+        left: 50%;
+        top: 166px;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+        z-index: 10;
+      }
+
+      .cta-title {
+        font-size: 48px;
+        color: #ffffff;
+        font-weight: 700;
+        text-align: center;
+        max-width: 624px;
+      }
+
+      .cta-icon img {
+        width: 189px;
+        height: 189px;
+      }
+
+      .dashboard-btn {
+        background-color: #e6e6e6;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #000000;
+        width: 242px;
+        height: 60px;
+      }
+
+      @media (max-width: 1024px) {
+        .gallery-img {
+          opacity: 0.3;
+        }
+      }
+
+      .footer-top {
+        background-color: #f7f7f7;
+        height: 236px;
+        display: flex;
+        align-items: center;
+      }
+
+      .footer-top-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 194px;
+        width: 100%;
+      }
+
+      .footer-brand {
+        font-size: 48px;
+        font-weight: 700;
+        color: #000000;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 48px;
+      }
+
+      .footer-links a {
+        text-decoration: none;
+        color: #000000;
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .footer-bottom {
+        background-color: #ffffff;
+        height: 264px;
+        border-top: 1px solid #e6e6e6;
+        display: flex;
+        align-items: flex-start;
+        padding-top: 96px;
+        box-sizing: border-box;
+      }
+
+      .footer-bottom-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 653px 0 653px;
+        width: 100%;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .footer-logo-small {
+        font-weight: 700;
+        font-size: 24px;
+        letter-spacing: 0.05em;
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .icon-box {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      @media (max-width: 768px) {
+        .footer-top-container {
+          flex-direction: column;
+          gap: 30px;
+          padding: 0 20px;
+        }
+        .footer-bottom-container {
+          padding: 0 20px;
+        }
+      }
+    </style>
+    <script src="global.js" defer></script>
+  </head>
+  <body>
+    <section id="header-section">
+      <div class="container header-container">
+        <div class="logo">
+          <div class="logo-text">GREENINJA</div>
+        </div>
+        <nav class="navigation">
+          <div class="nav-links">
+            <a href="index.html" class="nav-item">Home</a>
+
+            <div class="nav-item dropdown">
+              <span class="dropdown-label">Features</span>
+              <ul class="dropdown-menu">
+                <li><a href="plants.html">Native Plant Nursery</a></li>
+                <li><a href="rain.html">Gardening Consultation</a></li>
+                <li><a href="waste.html">Eco-Friendly Landscaping</a></li>
+              </ul>
+            </div>
+
+            <a href="#gallery-cta" class="nav-item">Dashboard</a>
+          </div>
+          <div class="nav-button-wrapper">
+            <button class="contact-btn">Contact Us</button>
+          </div>
+        </nav>
+      </div>
+    </section>
+    <section id="hero-section">
+      <div class="container hero-container">
+        <div class="hero-image-wrapper">
+          <img
+            src="images/174850378751c0611d9967ce25e57af50c870add.png"
+            alt="Hero Background"
+            class="hero-bg"
+          />
+        </div>
+        <div class="hero-content">
+          <div class="hero-text-group">
+            <h1 class="hero-title">Reduce Waste. Save Water. Grow Smart.</h1>
+            <p class="hero-subtitle">Build a Better Tomorrow</p>
+          </div>
+          <button class="hero-cta">
+            <span class="cta-text">Join us</span>
+          </button>
+        </div>
+      </div>
+    </section>
+    <section id="features-section">
+      <div class="container features-header">
+        <h2 class="features-title">Join the green revolution</h2>
+        <p class="features-subtitle">
+          Explore tools and tips that help you grow sustainably, reduce waste,
+          and feel great about your impact.
+        </p>
+      </div>
+
+      <div class="container features-container">
+        <!-- Card 1 -->
+        <a href="plants.html" class="feature-link">
+          <div class="feature-card">
+            <div class="card-image-wrapper">
+              <img
+                src="images/7e2411b89b1de4fef6ad8f85c4171f602d7874ac.png"
+                alt="Native Plant Nursery"
+              />
+            </div>
+            <button
+              class="card-action"
+              aria-label="View Native Plant Nursery"
+              type="button"
+            ></button>
+            <div class="card-content">
+              <h3 class="card-title">Native Plant Nursery</h3>
+              <p class="card-desc">
+                Browse a curated selection of region-friendly plants and learn
+                how to grow them with minimal watering and maintenance.
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 2 -->
+        <a href="rain.html" class="feature-link">
+          <div class="feature-card">
+            <div class="card-image-wrapper">
+              <img
+                src="images/258782530d5d7e5b070f91cda521d6d7445e4bbe.png"
+                alt="Gardening Consultation"
+              />
+            </div>
+            <button
+              class="card-action"
+              aria-label="View Gardening Consultation"
+              type="button"
+            ></button>
+            <div class="card-content">
+              <h3 class="card-title">Gardening Consultation</h3>
+              <p class="card-desc">
+                Get tailored advice for soil, lighting, and seasonal planting so
+                your garden thrives year-round.
+              </p>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 3 -->
+        <a href="waste.html" class="feature-link">
+          <div class="feature-card">
+            <div class="card-image-wrapper">
+              <img
+                src="images/pexels-markusspiske-113335.jpg"
+                alt="Eco-Friendly Landscaping"
+              />
+            </div>
+            <button
+              class="card-action"
+              aria-label="View Eco-Friendly Landscaping"
+              type="button"
+            ></button>
+            <div class="card-content">
+              <h3 class="card-title">Eco-Friendly Landscaping</h3>
+              <p class="card-desc">
+                Discover sustainable landscape ideas that conserve water,
+                support pollinators, and reduce maintenance.
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+    <section id="parallax-section">
+      <div class="container parallax-container">
+        <h2 class="parallax-text">Parallax image</h2>
+      </div>
+    </section>
+    <section id="how-it-works">
+      <div class="container how-container">
+        <!-- Top Content -->
+        <div class="how-top-content">
+          <div class="how-intro">
+            <h2>How GreeNinja Works</h2>
+            <p>
+              GreeNinja turns everyday actions into meaningful environmental
+              impact—while keeping it engaging with personalized tips, gamified
+              challenges, and real-time insights.
+            </p>
+          </div>
+          <div class="how-steps">
+            <div class="step-item">
+              <h3>Identify Waste</h3>
+              <p>
+                Check if your waste is compostable, recyclable, or landfill.
+              </p>
+            </div>
+            <div class="step-item">
+              <h3>Create Natural Resources</h3>
+              <p>Turn organic waste into compost and collect rainwater.</p>
+            </div>
+            <div class="step-item">
+              <h3>Grow Better Plants</h3>
+              <p>
+                Use natural soil nutrients and water to cultivate healthy
+                plants.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Large Image -->
+        <div class="how-image">
+          <img
+            src="images/22e19ab37c104f2ba06bc9884d0faff5bd19b325.png"
+            alt="Fox in nature"
+          />
+        </div>
+
+        <!-- Stats -->
+        <div class="how-stats">
+          <div class="stat-item">
+            <span class="stat-number">70%</span>
+            <span class="stat-label">Waste Compostable</span>
+          </div>
+          <div class="stat-item center-stat">
+            <span class="stat-number">60,000L</span>
+            <span class="stat-label">Rainwater Potential</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">30%</span>
+            <span class="stat-label">Improvement of soil water retention</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="gallery-cta">
+      <div class="container gallery-container">
+        <!-- Scattered Images (Absolute Positioning) -->
+        <img
+          src="images/52c2a754fec4ea7b18623afc643e1a086187fe3e.png"
+          class="gallery-img img-1"
+          alt="Nature 1"
+        />
+        <img
+          src="images/19e9c366349d5c759b2a57717c1e988c55d4d4cd.png"
+          class="gallery-img img-2"
+          alt="Nature 2"
+        />
+        <img
+          src="images/09268784aaa11062685eba05596ba11758829d96.png"
+          class="gallery-img img-3"
+          alt="Nature 3"
+        />
+        <img
+          src="images/pexels-karola-g-4207906.jpg"
+          class="gallery-img img-4"
+          alt="Nature 4"
+        />
+        <img
+          src="images/f4576c9d0df08503615ce17c893f5167b30a3b30.png"
+          class="gallery-img img-5"
+          alt="Nature 5"
+        />
+        <img
+          src="images/1908d0b1db08dd7de46e7749a16a05f95dc505f2.png"
+          class="gallery-img img-6"
+          alt="Nature 6"
+        />
+
+        <!-- Central Content -->
+        <div class="cta-content">
+          <h2 class="cta-title">Start Building a Greener Future</h2>
+          <div class="cta-icon">
+            <img
+              src="images/2963050f4e024c26a0d5b8e06e43e9a434298fe2.png"
+              alt="Recycle Icon"
+            />
+          </div>
+          <button class="dashboard-btn">Open Dashboard</button>
+        </div>
+      </div>
+    </section>
+    <footer id="footer-section">
+      <!-- Top Footer -->
+      <div class="footer-top">
+        <div class="container footer-top-container">
+          <div class="footer-brand">GreeNinja</div>
+          <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Resources</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Footer -->
+      <div class="footer-bottom">
+        <div class="container footer-bottom-container">
+          <div class="footer-logo-small">GREENINJA</div>
+          <div class="social-icons">
+            <div class="icon-box">
+              <img src="images/icons8-facebook-90.png" alt="Facebook" />
+            </div>
+            <div class="icon-box">
+              <img src="images/icons8-linkedin-90.png" alt="LinkedIn" />
+            </div>
+            <div class="icon-box">
+              <img src="images/icons8-youtube-90.png" alt="YouTube" />
+            </div>
+            <div class="icon-box">
+              <img src="images/icons8-instagram-90.png" alt="Instagram" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
